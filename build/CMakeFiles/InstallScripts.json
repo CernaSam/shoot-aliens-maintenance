@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/samo/code/shoot-the-aliens-legacy/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

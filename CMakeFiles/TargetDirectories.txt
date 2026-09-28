@@ -1,0 +1,7 @@
+/home/samo/code/shoot-the-aliens-legacy/build/CMakeFiles/shoot-the-aliens.dir
+/home/samo/code/shoot-the-aliens-legacy/build/CMakeFiles/edit_cache.dir
+/home/samo/code/shoot-the-aliens-legacy/build/CMakeFiles/rebuild_cache.dir
+/home/samo/code/shoot-the-aliens-legacy/build/CMakeFiles/list_install_components.dir
+/home/samo/code/shoot-the-aliens-legacy/build/CMakeFiles/install.dir
+/home/samo/code/shoot-the-aliens-legacy/build/CMakeFiles/install/local.dir
+/home/samo/code/shoot-the-aliens-legacy/build/CMakeFiles/install/strip.dir
