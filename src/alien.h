@@ -2,9 +2,9 @@
 #define ALIEN_H
 
 #include "gamestate.h"
-#include "vaisseau.h"
+#include "ship.h"
 
-class Alien : public Vaisseau
+class Alien : public Ship
 {
     public:
         Alien(sf::Time tempsPassePrincipal, int niveau, float difficulte, sf::Vector2u dimensionJeu, sf::Vector2u tailleVaisseau);

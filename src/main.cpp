@@ -1,14 +1,14 @@
 #include <SFML/System.hpp>
 #include <iostream>
 #include "gameengine.h"
-#include "jeu.h"
+#include "game.h"
 
 //PROJET DEBUTE LE 20 FEVRIER 2014
 int main()
 {
     srand(time(NULL));
     GameEngine shootTheAliens;
-    Jeu jeu;
+    Game jeu;
 	shootTheAliens.Init("Shoot The Aliens", 400, 700);
 	//shootTheAliens.getFenetre()->setMouseCursorVisible(false);
     shootTheAliens.getFenetre()->setFramerateLimit(60);
@@ -35,7 +35,7 @@ int main()
 /*
 RESTE A FAIRE :
 ALPHA :
-+ Vaisseau joueur
++ Ship joueur
 + Scores
 + Permettre le redimensionnement
 + Fond

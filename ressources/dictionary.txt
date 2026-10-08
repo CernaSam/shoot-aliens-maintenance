@@ -1,0 +1,193 @@
+# French → English C++ Refactoring Glossary
+
+## Classes and files
+
+| French         | English          |
+| -------------- | ---------------- |
+| `Jeu`          | `Game`           |
+| `jeu.h`        | `game.h`         |
+| `jeu.cpp`      | `game.cpp`       |
+| `Joueur`       | `Player`         |
+| `joueur.h`     | `player.h`       |
+| `joueur.cpp`   | `player.cpp`     |
+| `Vaisseau`     | `Ship`           |
+| `vaisseau.h`   | `ship.h`         |
+| `vaisseau.cpp` | `ship.cpp`       |
+| `Fond`         | `Background`     |
+| `fond.h`       | `background.h`   |
+| `fond.cpp`     | `background.cpp` |
+| `Tir`          | `Projectile`     |
+| `tir.h`        | `projectile.h`   |
+| `tir.cpp`      | `projectile.cpp` |
+| `Explosion`    | `Explosion`      |
+| `Alien`        | `Alien`          |
+
+## Methods and functions
+
+| French           | English                 |
+| ---------------- | ----------------------- |
+| `avancer`        | `moveForward`           |
+| `tirer`          | `shoot`                 |
+| `deplacer`       | `move`                  |
+| `mourir`         | `die`                   |
+| `changerEtat`    | `changeState`           |
+| `nettoyer`       | `cleanupFinishedSounds` |
+| `jouerSon`       | `playSound`             |
+| `jouerStrafe`    | `playStrafeSound`       |
+| `jouerReacteur`  | `playEngineSound`       |
+| `get_position`   | `getPosition`           |
+| `get_vivant`     | `isAlive`               |
+| `get_opacite`    | `getOpacity`            |
+| `get_nbr_images` | `getFrameCount`         |
+| `get_etat`       | `getState`              |
+| `get_id`         | `getId`                 |
+| `get_vitesse`    | `getSpeed`              |
+| `get_ennemi`     | `isEnemy`               |
+| `get_taille`     | `getSize`               |
+| `set_vivant`     | `setAlive`              |
+| `set_opacite`    | `setOpacity`            |
+| `set_joueur`     | `initializePlayer`      |
+| `stopper`        | `stop`                  |
+| `tuer`           | `stopImmediately`       |
+
+## Variables and member fields
+
+| French                    | English                     |
+| ------------------------- | --------------------------- |
+| `m_dimensionsJeu`         | `m_gameDimensions`          |
+| `m_dimensionsFenetre`     | `m_windowDimensions`        |
+| `m_dimensionFenetre`      | `m_windowDimensions`        |
+| `m_largeur`               | `m_width`                   |
+| `m_hauteur`               | `m_height`                  |
+| `m_tailleJoueur`          | `m_playerSize`              |
+| `m_tailleAlien`           | `m_alienSize`               |
+| `m_tailleVaisseau`        | `m_shipSize`                |
+| `m_tailleTir`             | `m_projectileSize`          |
+| `m_img_joueur`            | `m_playerTexture`           |
+| `m_img_alien`             | `m_alienTexture`            |
+| `m_img_tir`               | `m_projectileTexture`       |
+| `m_img_explosion`         | `m_explosionTexture`        |
+| `m_img_fond`              | `m_backgroundTexture`       |
+| `m_sprite_joueur`         | `m_playerSprite`            |
+| `m_sprite_alien`          | `m_alienSprites`            |
+| `m_sprite_tir`            | `m_projectileSprites`       |
+| `m_sprite_explosion`      | `m_explosionSprites`        |
+| `m_sprite_fond`           | `m_backgroundSprite`        |
+| `m_tailleExplosion`       | `m_explosionSize`           |
+| `m_position`              | `m_position`                |
+| `m_vitesse`               | `m_speed`                   |
+| `m_vitesseMax`            | `m_maxSpeed`                |
+| `m_acceleration`          | `m_acceleration`            |
+| `m_direction`             | `m_direction`               |
+| `m_difficulte`            | `m_difficulty`              |
+| `m_niveau`                | `m_level`                   |
+| `m_score`                 | `m_score`                   |
+| `m_scoreFinal`            | `m_finalScore`              |
+| `m_highscore`             | `m_highScore`               |
+| `m_finPartie`             | `m_gameOver`                |
+| `m_dansLeJeu`             | `m_isPlaying`               |
+| `m_pause`                 | `m_isPaused`                |
+| `m_deplacerJoueur`        | `m_playerMovementDirection` |
+| `m_aliensTotal`           | `m_totalAliens`             |
+| `m_morts`                 | `m_deaths`                  |
+| `m_mortsNiveauPrec`       | `m_previousLevelDeaths`     |
+| `m_police`                | `m_font`                    |
+| `m_rectangle`             | `m_bounds`                  |
+| `m_vuePrincipale`         | `m_mainView`                |
+| `m_fondPause`             | `m_pauseBackground`         |
+| `m_tempsPassePrincipal`   | `m_elapsedTime`             |
+| `m_tempsPassePause`       | `m_pausedDuration`          |
+| `m_tempsPasseFond`        | `m_backgroundElapsedTime`   |
+| `m_tempsPasseMouvement`   | `m_lastMovementTime`        |
+| `m_tempsPasseTirer`       | `m_lastShotTime`            |
+| `m_tempsPasseMourir`      | `m_deathTime`               |
+| `m_tempsPasseEtat`        | `m_lastStateChangeTime`     |
+| `m_tempsPasseAvancer`     | `m_lastMovementTime`        |
+| `m_tempsPasseNiveau`      | `m_lastLevelChangeTime`     |
+| `m_tempsPassePop`         | `m_lastSpawnTime`           |
+| `m_tempsPasseAttenuation` | `m_lastFadeTime`            |
+| `m_tempsPasseFX`          | `m_lastEffectTime`          |
+| `horlogePrincipale`       | `mainClock`                 |
+| `tempsPassePrincipal`     | `elapsedTime`               |
+| `tempsPassePause`         | `pausedDuration`            |
+| `m_debutPause`            | `m_pauseStartTime`          |
+| `nomScreenshot`           | `screenshotFilename`        |
+| `alea`                    | `randomValue`               |
+| `proprietaire`            | `ownerId`                   |
+| `multiplicateur`          | `multiplier`                |
+| `historique`              | `historyFile`               |
+| `ratioKill`               | `killRatio`                 |
+| `ennemi`                  | `isEnemy`                   |
+| `vivant`                  | `alive`                     |
+| `opacite`                 | `opacity`                   |
+| `vitesse`                 | `speed`                     |
+| `tailleVaisseau`          | `shipSize`                  |
+| `tailleAlien`             | `alienSize`                 |
+| `tailleExplosion`         | `explosionSize`             |
+| `dimensionJeu`            | `gameDimensions`            |
+| `direction`               | `direction`                 |
+
+## Sound manager
+
+| French                       | English                    |
+| ---------------------------- | -------------------------- |
+| `m_volumeBruitages`          | `m_soundEffectVolume`      |
+| `m_volumeMusique`            | `m_musicVolume`            |
+| `m_volumeTir`                | `m_projectileVolume`       |
+| `m_volumeExplosion`          | `m_explosionVolume`        |
+| `m_volumeReacteur`           | `m_engineVolume`           |
+| `m_volumeStrafe`             | `m_strafeVolume`           |
+| `m_buffer_tir`               | `m_projectileSoundBuffers` |
+| `m_buffer_explosion`         | `m_explosionSoundBuffers`  |
+| `m_buffer_reacteur`          | `m_engineSoundBuffers`     |
+| `m_buffer_strafe`            | `m_strafeSoundBuffers`     |
+| `m_son_strafe`               | `m_strafeSounds`           |
+| `m_son_fx`                   | `m_effectSounds`           |
+| `m_son_reacteur`             | `m_engineSounds`           |
+| `m_musique`                  | `m_music`                  |
+| `m_nbrSonsTir`               | `m_projectileSoundCount`   |
+| `m_nbrSonsExplosion`         | `m_explosionSoundCount`    |
+| `m_nbrSonsReacteur`          | `m_engineSoundCount`       |
+| `m_nbrSonsStrafe`            | `m_strafeSoundCount`       |
+| `m_nbrFX`                    | `m_effectCount`            |
+| `m_volume`                   | `m_masterVolume`           |
+| `m_volumeFX`                 | `m_effectVolume`           |
+| `m_vitesseAttenuationStrafe` | `m_strafeFadeSpeed`        |
+| `buff`                       | `soundBuffer`              |
+| `son`                        | `sound`                    |
+| `tir`                        | `projectileIndex`          |
+
+## Common French words in identifiers and comments
+
+| French             | English         |
+| ------------------ | --------------- |
+| `gauche`           | `left`          |
+| `droite`           | `right`         |
+| `immobile`         | `stationary`    |
+| `deplacement`      | `movement`      |
+| `déplacement`      | `movement`      |
+| `joueur`           | `player`        |
+| `vaisseau`         | `ship`          |
+| `taille`           | `size`          |
+| `largeur`          | `width`         |
+| `hauteur`          | `height`        |
+| `fenetre`          | `window`        |
+| `fenêtre`          | `window`        |
+| `fond`             | `background`    |
+| `pause`            | `pause`         |
+| `niveau`           | `level`         |
+| `morts`            | `deaths`        |
+| `ennemi`           | `enemy`         |
+| `sorti de l'écran` | `off-screen`    |
+| `destruction`      | `destruction`   |
+| `gestion`          | `management`    |
+| `chargement`       | `loading`       |
+| `enregistrement`   | `saving`        |
+| `réinitialisation` | `reset`         |
+| `bruitages`        | `sound effects` |
+| `réacteur`         | `engine`        |
+| `musique`          | `music`         |
+| `recherche`        | `search`        |
+| `pour optimiser`   | `to optimize`   |
+| `en secondes`      | `in seconds`    |
+

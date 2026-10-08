@@ -10,15 +10,15 @@
 #include <vector>
 #include "gameengine.h"
 #include "gamestate.h"
-#include "joueur.h"
+#include "player.h"
 #include "alien.h"
-#include "tir.h"
+#include "projectile.h"
 #include "explosion.h"
 #include "fond.h"
 #include "soundmanager.h"
 
 
-class Jeu : public GameState
+class Game : public GameState
 {
 public:
 	void Init();
@@ -71,7 +71,7 @@ private:
     std::vector<sf::Sprite> m_sprite_alien;
     sf::Vector2u m_tailleAlien;
 
-    std::vector<Tir> m_tir;
+    std::vector<Projectile> m_tir;
     sf::Texture m_img_tir;
     std::vector<sf::Sprite> m_sprite_tir;
     sf::Vector2u m_tailleTir;
@@ -80,7 +80,7 @@ private:
     sf::Texture m_img_explosion;
     std::vector<sf::Sprite> m_sprite_explosion;
 
-    Joueur m_joueur;
+    Player m_joueur;
     sf::Texture m_img_joueur;
     sf::Sprite m_sprite_joueur;
     sf::Vector2u m_tailleJoueur;

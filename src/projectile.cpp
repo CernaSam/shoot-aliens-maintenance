@@ -1,6 +1,6 @@
-#include "tir.h"
+#include "projectile.h"
 
-Tir::Tir(sf::Time tempsPassePrincipal, bool ennemi, int vitesseVaisseau, sf::Vector2f position, sf::Vector2u tailleVaisseau, sf::Vector2u m_tailleTir)
+Projectile::Projectile(sf::Time tempsPassePrincipal, bool ennemi, int vitesseVaisseau, sf::Vector2f position, sf::Vector2u tailleVaisseau, sf::Vector2u m_tailleTir)
 {
     m_ennemi = ennemi;
     m_vitesse = vitesseVaisseau * 2;
@@ -11,11 +11,11 @@ Tir::Tir(sf::Time tempsPassePrincipal, bool ennemi, int vitesseVaisseau, sf::Vec
     if(!m_ennemi) SoundManager::getInstance()->jouerSon(TIR);
 }
 
-Tir::~Tir()
+Projectile::~Projectile()
 {
 }
 
-void Tir::avancer(sf::Time tempsPassePrincipal)
+void Projectile::avancer(sf::Time tempsPassePrincipal)
 {
     if(m_ennemi)
     {

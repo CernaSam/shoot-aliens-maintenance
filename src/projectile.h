@@ -6,11 +6,11 @@
 #include <vector>
 #include <iostream>
 
-class Tir
+class Projectile
 {
     public:
-        Tir(sf::Time tempsPassePrincipal, bool ennemi, int vitesse, sf::Vector2f position, sf::Vector2u tailleAlien, sf::Vector2u m_tailleTir);
-        virtual ~Tir();
+        Projectile(sf::Time tempsPassePrincipal, bool ennemi, int vitesse, sf::Vector2f position, sf::Vector2u tailleAlien, sf::Vector2u m_tailleTir);
+        virtual ~Projectile();
 
         void avancer(sf::Time tempsPassePrincipal);
 

@@ -5,7 +5,7 @@
 #include <deque>
 #include <map>
 #include <SFML/Audio.hpp>
-#include "vaisseau.h"
+#include "ship.h"
 
 enum Sons {TIR, EXPLOSION};
 

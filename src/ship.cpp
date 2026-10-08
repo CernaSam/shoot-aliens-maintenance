@@ -1,23 +1,23 @@
-#include "vaisseau.h"
+#include "ship.h"
 
-int Vaisseau::nbrEtat = 4;
-int Vaisseau::nbrDeVaisseaux = 0;
+int Ship::nbrEtat = 4;
+int Ship::nbrDeVaisseaux = 0;
 
-Vaisseau::Vaisseau()
+Ship::Ship()
 {
     m_vivant = true;
     m_opacite = 255;
     m_etat = 0;
     m_vitesse = 0;
-    m_id = Vaisseau::nbrDeVaisseaux;
-    Vaisseau::nbrDeVaisseaux++;
+    m_id = Ship::nbrDeVaisseaux;
+    Ship::nbrDeVaisseaux++;
 }
 
-Vaisseau::~Vaisseau()
+Ship::~Ship()
 {
 }
 
-void Vaisseau::mourir(sf::Time tempsPassePrincipal)
+void Ship::mourir(sf::Time tempsPassePrincipal)
 {
     if(m_opacite > 0)
     {
@@ -34,7 +34,7 @@ void Vaisseau::mourir(sf::Time tempsPassePrincipal)
     }
 }
 
-bool Vaisseau::tirer(sf::Time tempsPassePrincipal)
+bool Ship::tirer(sf::Time tempsPassePrincipal)
 {
     m_tirer = false;
     if(tempsPassePrincipal.asSeconds() - m_tempsPasseTirer.asSeconds() > 1 / m_freqDeTir)
@@ -45,7 +45,7 @@ bool Vaisseau::tirer(sf::Time tempsPassePrincipal)
     return m_tirer;
 }
 
-void Vaisseau::changerEtat(sf::Time tempsPassePrincipal)
+void Ship::changerEtat(sf::Time tempsPassePrincipal)
 {
     if((tempsPassePrincipal.asMilliseconds() - m_tempsPasseEtat.asMilliseconds()) >= 75)
     {
@@ -72,7 +72,7 @@ void Vaisseau::changerEtat(sf::Time tempsPassePrincipal)
     }
 }
 
-sf::Vector2u Vaisseau::get_taille(sf::Vector2u tailleJoueur)
+sf::Vector2u Ship::get_taille(sf::Vector2u tailleJoueur)
 {
     sf::Vector2u taille = sf::Vector2u(tailleJoueur.x/nbrEtat, tailleJoueur.y);
     return taille;

@@ -1,4 +1,4 @@
-#include "joueur.h"
+#include "player.h"
 #include <iostream>
 
 enum Directions
@@ -6,16 +6,16 @@ enum Directions
     IMMOBILE, GAUCHE, DROITE
 };
 
-Joueur::Joueur()
+Player::Player()
 {
     m_freqDeTir = 4;
 }
 
-Joueur::~Joueur()
+Player::~Player()
 {
 }
 
-void Joueur::set_joueur(sf::Vector2u dimensionJeu, sf::Vector2u tailleVaisseau)
+void Player::set_joueur(sf::Vector2u dimensionJeu, sf::Vector2u tailleVaisseau)
 {
     m_position.x = dimensionJeu.x / 2 - tailleVaisseau.x / 2;
     m_position.y = dimensionJeu.y - tailleVaisseau.y - 10;
@@ -24,7 +24,7 @@ void Joueur::set_joueur(sf::Vector2u dimensionJeu, sf::Vector2u tailleVaisseau)
     m_dimensionFenetre = dimensionJeu;
 }
 
-void Joueur::deplacer(sf::Time tempsPassePrincipal, int direction)
+void Player::deplacer(sf::Time tempsPassePrincipal, int direction)
 {
     if(this->get_vivant())
     {

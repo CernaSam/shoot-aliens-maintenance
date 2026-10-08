@@ -1,4 +1,4 @@
-#include "jeu.h"
+#include "game.h"
 
 enum Directions
 {
@@ -24,7 +24,7 @@ bool Collision(AABB objet1, AABB objet2)
           return true;
 }
 
-void Jeu::Init()
+void Game::Init()
 {
     m_dimensionsJeu.x = 400;
     m_dimensionsJeu.y = 700;
@@ -78,24 +78,24 @@ void Jeu::Init()
     m_img_explosion.loadFromFile("ressources/images/explosion.png");
 
     m_tailleTir = m_img_tir.getSize();
-    m_tailleJoueur = Vaisseau::get_taille(m_img_joueur.getSize());
-    m_tailleAlien = Vaisseau::get_taille(m_img_alien.getSize());
+    m_tailleJoueur = Ship::get_taille(m_img_joueur.getSize());
+    m_tailleAlien = Ship::get_taille(m_img_alien.getSize());
 }
 
-void Jeu::Cleanup()
+void Game::Cleanup()
 {
     delete m_fond;
 }
 
-void Jeu::Pause()
+void Game::Pause()
 {
 }
 
-void Jeu::Resume()
+void Game::Resume()
 {
 }
 
-void Jeu::HandleEvents(GameEngine* shootTheAliens)
+void Game::HandleEvents(GameEngine* shootTheAliens)
 {
     // On inspecte tous les �v�nements de la fen�tre qui ont �t� �mis depuis la pr�c�dente it�ration
     sf::Event event;
@@ -179,7 +179,7 @@ void Jeu::HandleEvents(GameEngine* shootTheAliens)
     }
 }
 
-void Jeu::Update(GameEngine* shootTheAliens)
+void Game::Update(GameEngine* shootTheAliens)
 {
     m_dimensionsFenetre = shootTheAliens->getFenetre()->getSize();
     m_rectangle = m_version.getLocalBounds();
@@ -221,10 +221,10 @@ void Jeu::Update(GameEngine* shootTheAliens)
             m_sprite_joueur.setPosition(m_joueur.get_position());
             if(m_deplacerJoueur == GAUCHE || m_deplacerJoueur == DROITE) SoundManager::getInstance()->jouerStrafe(false, horlogePrincipale.getElapsedTime() - tempsPassePause);
             else SoundManager::getInstance()->jouerStrafe(true, horlogePrincipale.getElapsedTime() - tempsPassePause);
-            //Tir du joueur
+            //Projectile du joueur
             if(m_joueur.tirer(horlogePrincipale.getElapsedTime() - tempsPassePause))
             {
-                m_tir.push_back(Tir(horlogePrincipale.getElapsedTime() - tempsPassePause, false, 0, m_joueur.get_position(), m_tailleJoueur, m_tailleTir));
+                m_tir.push_back(Projectile(horlogePrincipale.getElapsedTime() - tempsPassePause, false, 0, m_joueur.get_position(), m_tailleJoueur, m_tailleTir));
                 m_sprite_tir.push_back(sf::Sprite());
                 m_sprite_tir.back().setTexture(m_img_tir);
                 m_sprite_tir.back().setPosition(m_tir.back().get_position());
@@ -251,10 +251,10 @@ void Jeu::Update(GameEngine* shootTheAliens)
                     //D�placements alien
                     m_sprite_alien[i].setPosition(sf::Vector2f(m_alien[i].get_position()));
                     m_alien[i].avancer(horlogePrincipale.getElapsedTime() - tempsPassePause);
-                    //Tir des aliens
+                    //Projectile des aliens
                     if(m_alien[i].get_vivant() == true && m_alien[i].tirer(horlogePrincipale.getElapsedTime() - tempsPassePause))
                     {
-                        m_tir.push_back(Tir(horlogePrincipale.getElapsedTime() - tempsPassePause, true, m_alien[i].get_vitesse(), m_alien[i].get_position(), m_tailleAlien, m_tailleTir));
+                        m_tir.push_back(Projectile(horlogePrincipale.getElapsedTime() - tempsPassePause, true, m_alien[i].get_vitesse(), m_alien[i].get_position(), m_tailleAlien, m_tailleTir));
                         m_sprite_tir.push_back(sf::Sprite());
                         m_sprite_tir.back().setTexture(m_img_tir);
                         m_sprite_tir.back().setPosition(m_tir.back().get_position());
@@ -292,11 +292,11 @@ void Jeu::Update(GameEngine* shootTheAliens)
             AABB aabbJoueur = {posJoueur.x, posJoueur.y, m_tailleJoueur.x, m_tailleJoueur.y};
             sf::Vector2f posTir;
 
-            vector<Tir>::iterator iteratorTir;
+            vector<Projectile>::iterator iteratorTir;
             vector<Alien>::iterator iteratorAlien;
             vector<sf::Sprite>::iterator iteratorSprite;
 
-            //Aliens-Joueur
+            //Aliens-Player
             for(unsigned int i=0 ; i < m_alien.size() ; i++)
             {
                 posAlien = m_alien[i].get_position();
@@ -311,7 +311,7 @@ void Jeu::Update(GameEngine* shootTheAliens)
             //Tirs
             for(unsigned int i=0 ; i < m_tir.size() ; i++)
             {
-                //Tirs-Joueur
+                //Tirs-Player
                 if(m_tir[i].get_ennemi())
                 {
                     posTir = m_tir[i].get_position();
@@ -364,7 +364,7 @@ void Jeu::Update(GameEngine* shootTheAliens)
                     }
                 }
             }
-            //Joueur
+            //Player
             if(m_joueur.get_vivant() == false)
             {
                 if(m_joueur.get_opacite() == 255)
@@ -511,7 +511,7 @@ void Jeu::Update(GameEngine* shootTheAliens)
     shootTheAliens->getFenetre()->setView(m_vuePrincipale);
 }
 
-void Jeu::Draw(GameEngine* shootTheAliens)
+void Game::Draw(GameEngine* shootTheAliens)
 {
     shootTheAliens->getFenetre()->clear(sf::Color::Black);
 

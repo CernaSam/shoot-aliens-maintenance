@@ -2,7 +2,7 @@
 #define EXPLOSION_H
 
 #include "alien.h"
-#include "joueur.h"
+#include "player.h"
 #include "soundmanager.h"
 
 class Explosion

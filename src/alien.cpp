@@ -54,7 +54,7 @@ void Alien::avancer(sf::Time tempsPassePrincipal)
 
 bool Alien::tirer(sf::Time tempsPassePrincipal)
 {
-    Vaisseau::tirer(tempsPassePrincipal);
+    Ship::tirer(tempsPassePrincipal);
     if(!(m_arme)) m_tirer = false;
     return m_tirer;
 }

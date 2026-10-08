@@ -5,11 +5,11 @@
 #include "gamestate.h"
 #include "soundmanager.h"
 
-class Vaisseau
+class Ship
 {
     public:
-        Vaisseau();
-        virtual ~Vaisseau();
+        Ship();
+        virtual ~Ship();
 
         void mourir(sf::Time tempsPassePrincipal);
         bool tirer(sf::Time tempsPassePrincipal);

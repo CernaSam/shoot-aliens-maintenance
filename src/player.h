@@ -2,14 +2,14 @@
 #define JOUEUR_H
 
 #include "gamestate.h"
-#include "vaisseau.h"
+#include "ship.h"
 #include <SFML/Audio.hpp>
 
-class Joueur : public Vaisseau
+class Player : public Ship
 {
     public:
-        Joueur();
-        virtual ~Joueur();
+        Player();
+        virtual ~Player();
 
         void deplacer(sf::Time tempsPassePrincipal, int direction);
 
