@@ -8,7 +8,7 @@
 class Explosion
 {
     public:
-        Explosion(sf::Time tempsPassePrincipal, sf::Vector2f position, sf::Vector2u tailleVaisseau, unsigned int tailleExplosion, int vitesse);
+        Explosion(sf::Time elapsedTime, sf::Vector2f position, sf::Vector2u shipSize, unsigned int explosionSize, int speed);
         virtual ~Explosion();
 
         const sf::Vector2f get_position() const
@@ -20,15 +20,15 @@ class Explosion
             return m_etat;
         }
 
-        void changeState(sf::Time tempsPassePrincipal);
-        void moveForward(sf::Time tempsPassePrincipal);
+        void changeState(sf::Time elapsedTime);
+        void moveForward(sf::Time elapsedTime);
     private:
         int m_etat;
         sf::Vector2f m_position;
-        int m_vitesse;
+        int m_speed;
 
-        sf::Time m_tempsPasseEtat;
-        sf::Time m_tempsPasseAvancer;
+        sf::Time m_lastStateChangeTime;
+        sf::Time m_lastMovementTime;
 };
 
 #endif // EXPLOSION_H

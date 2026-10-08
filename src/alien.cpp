@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <vector>
 
-Alien::Alien(sf::Time tempsPassePrincipal, int niveau, float difficulte, sf::Vector2u dimensionJeu, sf::Vector2u tailleVaisseau)
+Alien::Alien(sf::Time elapsedTime, int niveau, float difficulte, sf::Vector2u gameDimensions, sf::Vector2u shipSize)
 {
-    m_vitesse = 500 * difficulte + niveau * 20;
+    m_speed = 500 * difficulte + niveau * 20;
     if(niveau == 1)
     {
         if(rand() % 100 + 1 < 30)
@@ -36,25 +36,25 @@ Alien::Alien(sf::Time tempsPassePrincipal, int niveau, float difficulte, sf::Vec
     }else{
         m_arme = true;
     }
-    m_position.x = rand() % (dimensionJeu.x + 1 - tailleVaisseau.x);
+    m_position.x = rand() % (gameDimensions.x + 1 - shipSize.x);
     m_position.y = -100;
     m_freqDeTir = 1 + difficulte + niveau / 5;
-    m_tempsPasseMouvement = tempsPassePrincipal;
+    m_lastMovementTime = elapsedTime;
 }
 
 Alien::~Alien()
 {
 }
 
-void Alien::moveForward(sf::Time tempsPassePrincipal)
+void Alien::moveForward(sf::Time elapsedTime)
 {
-    m_position.y = m_position.y + m_vitesse * (tempsPassePrincipal.asSeconds() - m_tempsPasseMouvement.asSeconds());
-    m_tempsPasseMouvement = tempsPassePrincipal;
+    m_position.y = m_position.y + m_speed * (elapsedTime.asSeconds() - m_lastMovementTime.asSeconds());
+    m_lastMovementTime = elapsedTime;
 }
 
-bool Alien::shoot(sf::Time tempsPassePrincipal)
+bool Alien::shoot(sf::Time elapsedTime)
 {
-    Ship::shoot(tempsPassePrincipal);
+    Ship::shoot(elapsedTime);
     if(!(m_arme)) m_tirer = false;
     return m_tirer;
 }

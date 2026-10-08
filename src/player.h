@@ -11,12 +11,12 @@ class Player : public Ship
         Player();
         virtual ~Player();
 
-        void move(sf::Time tempsPassePrincipal, int direction);
+        void move(sf::Time elapsedTime, int direction);
 
-        void set_player(sf::Vector2u dimensionJeu, sf::Vector2u tailleVaisseau);
+        void set_player(sf::Vector2u gameDimensions, sf::Vector2u shipSize);
     private:
         sf::Vector2u m_dimensionFenetre;
-        int m_vitesseMax;
+        int m_maxSpeed;
         float m_acceleration;
         int m_direction;
 

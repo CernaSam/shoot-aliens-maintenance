@@ -35,9 +35,9 @@ class SoundManager
         void pause(bool pause);
         void playPause(bool pause, sf::Sound *son);
         void playSound(Sons type);
-        void playStrafeSound(bool stop, sf::Time tempsPassePrincipal, bool stopImmediately = false);
-        void playEngineSound(int proprietaire, bool stop);
-        void fx(sf::Time tempsPassePrincipal);
+        void playStrafeSound(bool stop, sf::Time elapsedTime, bool stopImmediately = false);
+        void playEngineSound(int ownerId, bool stop);
+        void fx(sf::Time elapsedTime);
     protected:
     private:
         static SoundManager *m_singleton;
@@ -63,8 +63,8 @@ class SoundManager
 
         int tir;
         float m_vitesseAttenuationStrafe;
-        sf::Time m_tempsPasseAttenuation;
-        sf::Time m_tempsPasseFX;
+        sf::Time m_lastFadeTime;
+        sf::Time m_lastEffectTime;
 };
 
 #endif // SOUNDMANAGER_H

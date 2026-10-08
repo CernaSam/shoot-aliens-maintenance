@@ -26,60 +26,60 @@ bool Collision(AABB objet1, AABB objet2)
 
 void Game::Init()
 {
-    m_dimensionsJeu.x = 400;
-    m_dimensionsJeu.y = 700;
+    m_gameDimensions.x = 400;
+    m_gameDimensions.y = 700;
 
-    m_fond = new Fond(m_dimensionsJeu);
+    m_fond = new Fond(m_gameDimensions);
 
-    m_dansLeJeu = false;
-    m_pause = false;
-    m_difficulte = 0.5;
-    m_niveau = 1;
-    m_morts = 0;
+    m_isPLaying = false;
+    m_isPaused = false;
+    m_difficulty = 0.5;
+    m_level = 1;
+    m_deaths = 0;
     m_aliensTotal = 0;
     m_score = 0;
     m_scoreFinal = 0;
     m_highscore = 0;
-    m_finPartie = false;
+    m_gameOver = false;
 
-    m_police.loadFromFile("ressources/bnmachine.ttf");
-    m_start.setFont(m_police);
+    m_fonts.loadFromFile("ressources/bnmachine.ttf");
+    m_start.setFont(m_fonts);
     m_start.setString("I Wanna Kill Aliens !");
     m_start.setCharacterSize(32);
     m_start.setColor(sf::Color::Red);
-    m_rectangle = m_start.getLocalBounds();
-    m_start.setOrigin(m_rectangle.width/2, m_rectangle.height/2);
+    m_fontsm_bounds = m_start.getLocalBounds();
+    m_start.setOrigin(m_fontsm_bounds.width/2, m_fontsm_bounds.height/2);
 
-    m_version.setFont(m_police);
+    m_version.setFont(m_fonts);
     m_version.setString("1.0.0 Legacy");
     m_version.setCharacterSize(13);
     m_version.setColor(sf::Color(255, 255, 255, 100));
 
-    m_texteScore.setFont(m_police);
+    m_texteScore.setFont(m_fonts);
     m_texteScore.setCharacterSize(42);
     m_texteScore.setColor(sf::Color::White);
 
-    m_texteScorePrecedent.setFont(m_police);
+    m_texteScorePrecedent.setFont(m_fonts);
     m_texteScorePrecedent.setCharacterSize(32);
     m_texteScorePrecedent.setColor(sf::Color::White);
 
-    m_texteHighscore.setFont(m_police);
+    m_texteHighscore.setFont(m_fonts);
     m_texteHighscore.setCharacterSize(32);
     m_texteHighscore.setColor(sf::Color::Yellow);
 
-    m_textePause.setFont(m_police);
+    m_textePause.setFont(m_fonts);
     m_textePause.setString("Pause");
     m_textePause.setCharacterSize(50);
     m_textePause.setColor(sf::Color::White);
 
-    m_img_joueur.loadFromFile("ressources/images/joueur.png");
-    m_img_alien.loadFromFile("ressources/images/alien.png");
-    m_img_tir.loadFromFile("ressources/images/tir.png");
-    m_img_explosion.loadFromFile("ressources/images/explosion.png");
+    m_playerTexture.loadFromFile("ressources/images/joueur.png");
+    m_alienTexture.loadFromFile("ressources/images/alien.png");
+    m_projectileTexture.loadFromFile("ressources/images/tir.png");
+    m_explosionTexture.loadFromFile("ressources/images/explosion.png");
 
-    m_tailleTir = m_img_tir.getSize();
-    m_tailleJoueur = Ship::get_size(m_img_joueur.getSize());
-    m_tailleAlien = Ship::get_size(m_img_alien.getSize());
+    m_projectileSize = m_projectileTexture.getSize();
+    m_playerSize = Ship::get_size(m_playerTexture.getSize());
+    m_alienSize = Ship::get_size(m_alienTexture.getSize());
 }
 
 void Game::Cleanup()
@@ -119,40 +119,40 @@ void Game::HandleEvents(GameEngine* shootTheAliens)
         //Commencer, Pause, Quitter
         if(event.type == sf::Event::KeyPressed)
         {
-            if(event.key.code == sf::Keyboard::Space && m_dansLeJeu == false)
+            if(event.key.code == sf::Keyboard::Space && m_isPLaying == false)
             {
-                m_dansLeJeu = true;
+                m_isPLaying = true;
                 SoundManager::getInstance()->playEngineSound(m_joueur.get_id(), false);
             }
 
-            if(event.key.code == sf::Keyboard::P && m_dansLeJeu)
+            if(event.key.code == sf::Keyboard::P && m_isPLaying)
             {
-                if(m_pause)
+                if(m_isPaused)
                 {
-                    tempsPassePause += horlogePrincipale.getElapsedTime() - m_debutPause;
+                    pausedDuration += mainClock.getElapsedTime() - m_pauseStartTime;
                     SoundManager::getInstance()->pause(false);
                 }else{
-                    m_debutPause = horlogePrincipale.getElapsedTime();
+                    m_pauseStartTime = mainClock.getElapsedTime();
                     SoundManager::getInstance()->pause(true);
                 }
-                m_pause = (m_pause) ? false : true;
+                m_isPaused = (m_isPaused) ? false : true;
             }
             if(event.key.code == sf::Keyboard::C)
             {
-                if(!(m_pause))
+                if(!(m_isPaused))
                 {
-                    m_debutPause = horlogePrincipale.getElapsedTime();
-                    m_pause = true;
+                    m_pauseStartTime = mainClock.getElapsedTime();
+                    m_isPaused = true;
                 }
                 timer = time(NULL);
-                alea = rand()%(90)+10;
-                nomScreenshot << "screens/" << timer << "_" << alea << ".png";
-                shootTheAliens->getFenetre()->capture().saveToFile(nomScreenshot.str());
-                nomScreenshot.str("");
-                if(m_pause)
+                randomValue = rand()%(90)+10;
+                screenshotFilename << "screens/" << timer << "_" << randomValue << ".png";
+                shootTheAliens->getFenetre()->capture().saveToFile(screenshotFilename.str());
+                screenshotFilename.str("");
+                if(m_isPaused)
                 {
-                    tempsPassePause += horlogePrincipale.getElapsedTime() - m_debutPause;
-                    m_pause = false;
+                    pausedDuration += mainClock.getElapsedTime() - m_pauseStartTime;
+                    m_isPaused = false;
                 }
             }
             if(event.key.code == sf::Keyboard::Q)
@@ -162,18 +162,18 @@ void Game::HandleEvents(GameEngine* shootTheAliens)
             }
         }
 
-        if(m_dansLeJeu)
+        if(m_isPLaying)
         {
             //D�placement du joueur
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
-                m_deplacerJoueur = GAUCHE;
+                m_playerMovementDirection = GAUCHE;
             }
             else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
-                m_deplacerJoueur = DROITE;
+                m_playerMovementDirection = DROITE;
             }else{
-                m_deplacerJoueur = IMMOBILE;
+                m_playerMovementDirection = IMMOBILE;
             }
         }
     }
@@ -181,30 +181,30 @@ void Game::HandleEvents(GameEngine* shootTheAliens)
 
 void Game::Update(GameEngine* shootTheAliens)
 {
-    m_dimensionsFenetre = shootTheAliens->getFenetre()->getSize();
-    m_rectangle = m_version.getLocalBounds();
-    m_version.setPosition(m_rectangle.width - 67, m_dimensionsJeu.y - m_rectangle.height - 7);
+    m_windowDimensions = shootTheAliens->getFenetre()->getSize();
+    m_fontsm_bounds = m_version.getLocalBounds();
+    m_version.setPosition(m_fontsm_bounds.width - 67, m_gameDimensions.y - m_fontsm_bounds.height - 7);
 
-    if(m_dansLeJeu)
+    if(m_isPLaying)
     {
-        if(m_pause)
+        if(m_isPaused)
         {
-            m_rectangle = m_textePause.getLocalBounds();
-            m_textePause.setPosition(m_dimensionsJeu.x - m_rectangle.width - 5, -5);
-            m_textePause.setOrigin(m_rectangle.width/2, m_rectangle.height/2);
-            m_textePause.setPosition(m_dimensionsJeu.x/2, m_dimensionsJeu.y/2);
-            m_fondPause.setSize(sf::Vector2f(m_dimensionsJeu.x, m_dimensionsJeu.y));
-            m_fondPause.setFillColor(sf::Color(0,15,31,127));
-            SoundManager::getInstance()->playStrafeSound(false, horlogePrincipale.getElapsedTime() - tempsPassePause, true);
+            m_fontsm_bounds = m_textePause.getLocalBounds();
+            m_textePause.setPosition(m_gameDimensions.x - m_fontsm_bounds.width - 5, -5);
+            m_textePause.setOrigin(m_fontsm_bounds.width/2, m_fontsm_bounds.height/2);
+            m_textePause.setPosition(m_gameDimensions.x/2, m_gameDimensions.y/2);
+            m_pauseBackground.setSize(sf::Vector2f(m_gameDimensions.x, m_gameDimensions.y));
+            m_pauseBackground.setFillColor(sf::Color(0,15,31,127));
+            SoundManager::getInstance()->playStrafeSound(false, mainClock.getElapsedTime() - pausedDuration, true);
         }else{
-            m_fond->update(horlogePrincipale.getElapsedTime() - tempsPassePause);
-            SoundManager::getInstance()->fx(horlogePrincipale.getElapsedTime() - tempsPassePause);
+            m_fond->update(mainClock.getElapsedTime() - pausedDuration);
+            SoundManager::getInstance()->fx(mainClock.getElapsedTime() - pausedDuration);
             //Niveaux
-            tempsPassePrincipal = horlogePrincipale.getElapsedTime() - tempsPassePause;
-            if(tempsPassePrincipal.asSeconds() - tempsPasseNiveau.asSeconds() > 5 / m_difficulte)
+            elapsedTime = mainClock.getElapsedTime() - pausedDuration;
+            if(elapsedTime.asSeconds() - tempsPasseNiveau.asSeconds() > 5 / m_difficulty)
             {
-                tempsPasseNiveau = tempsPassePrincipal;
-                m_niveau++;
+                tempsPasseNiveau = elapsedTime;
+                m_level++;
             }
 
             //Score
@@ -212,74 +212,74 @@ void Game::Update(GameEngine* shootTheAliens)
             convert << m_score;
             string score = convert.str();
             m_texteScore.setString(score);
-            m_rectangle = m_texteScore.getLocalBounds();
-            m_texteScore.setPosition(m_dimensionsJeu.x - m_rectangle.width - 5, -5);
+            m_fontsm_bounds = m_texteScore.getLocalBounds();
+            m_texteScore.setPosition(m_gameDimensions.x - m_fontsm_bounds.width - 5, -5);
 
 
             //D�placements du joueur
-            m_joueur.move(horlogePrincipale.getElapsedTime() - tempsPassePause, m_deplacerJoueur);
-            m_sprite_joueur.setPosition(m_joueur.get_position());
-            if(m_deplacerJoueur == GAUCHE || m_deplacerJoueur == DROITE) SoundManager::getInstance()->playStrafeSound(false, horlogePrincipale.getElapsedTime() - tempsPassePause);
-            else SoundManager::getInstance()->playStrafeSound(true, horlogePrincipale.getElapsedTime() - tempsPassePause);
+            m_joueur.move(mainClock.getElapsedTime() - pausedDuration, m_playerMovementDirection);
+            m_playerSprite.setPosition(m_joueur.get_position());
+            if(m_playerMovementDirection == GAUCHE || m_playerMovementDirection == DROITE) SoundManager::getInstance()->playStrafeSound(false, mainClock.getElapsedTime() - pausedDuration);
+            else SoundManager::getInstance()->playStrafeSound(true, mainClock.getElapsedTime() - pausedDuration);
             //Projectile du joueur
-            if(m_joueur.shoot(horlogePrincipale.getElapsedTime() - tempsPassePause))
+            if(m_joueur.shoot(mainClock.getElapsedTime() - pausedDuration))
             {
-                m_tir.push_back(Projectile(horlogePrincipale.getElapsedTime() - tempsPassePause, false, 0, m_joueur.get_position(), m_tailleJoueur, m_tailleTir));
-                m_sprite_tir.push_back(sf::Sprite());
-                m_sprite_tir.back().setTexture(m_img_tir);
-                m_sprite_tir.back().setPosition(m_tir.back().get_position());
+                m_tir.push_back(Projectile(mainClock.getElapsedTime() - pausedDuration, false, 0, m_joueur.get_position(), m_playerSize, m_projectileSize));
+                m_projectileSprite.push_back(sf::Sprite());
+                m_projectileSprite.back().setTexture(m_projectileTexture);
+                m_projectileSprite.back().setPosition(m_tir.back().get_position());
             }
 
             //Pop
-            tempsPassePrincipal = horlogePrincipale.getElapsedTime() - tempsPassePause;
-            if(tempsPassePrincipal.asSeconds() - tempsPassePop.asSeconds() > 0.5 / (m_difficulte + float(m_niveau) / 5) || m_alien.size() == 0)
+            elapsedTime = mainClock.getElapsedTime() - pausedDuration;
+            if(elapsedTime.asSeconds() - tempsPassePop.asSeconds() > 0.5 / (m_difficulty + float(m_level) / 5) || m_alien.size() == 0)
             {
-                tempsPassePop = tempsPassePrincipal;
-                m_alien.push_back(Alien(horlogePrincipale.getElapsedTime() - tempsPassePause, m_niveau, m_difficulte, m_dimensionsJeu, m_tailleAlien));
-                m_sprite_alien.push_back(sf::Sprite());
-                m_sprite_alien.back().setTexture(m_img_alien);
-                m_sprite_alien.back().setPosition(sf::Vector2f(m_alien.back().get_position()));
+                tempsPassePop = elapsedTime;
+                m_alien.push_back(Alien(mainClock.getElapsedTime() - pausedDuration, m_level, m_difficulty, m_gameDimensions, m_alienSize));
+                m_alienSprite.push_back(sf::Sprite());
+                m_alienSprite.back().setTexture(m_alienTexture);
+                m_alienSprite.back().setPosition(sf::Vector2f(m_alien.back().get_position()));
                 m_aliensTotal++;
             }
             //Alien dans l'�cran
             sf::Vector2f posAlien = m_alien.front().get_position();
-            if(posAlien.y < m_dimensionsJeu.y)
+            if(posAlien.y < m_gameDimensions.y)
             {
                 //Actions
                 for(unsigned int i = 0 ; i < m_alien.size() && m_alien.size() > 0 ; i++)
                 {
                     //D�placements alien
-                    m_sprite_alien[i].setPosition(sf::Vector2f(m_alien[i].get_position()));
-                    m_alien[i].moveForward(horlogePrincipale.getElapsedTime() - tempsPassePause);
+                    m_alienSprite[i].setPosition(sf::Vector2f(m_alien[i].get_position()));
+                    m_alien[i].moveForward(mainClock.getElapsedTime() - pausedDuration);
                     //Projectile des aliens
-                    if(m_alien[i].is_alive() == true && m_alien[i].shoot(horlogePrincipale.getElapsedTime() - tempsPassePause))
+                    if(m_alien[i].is_alive() == true && m_alien[i].shoot(mainClock.getElapsedTime() - pausedDuration))
                     {
-                        m_tir.push_back(Projectile(horlogePrincipale.getElapsedTime() - tempsPassePause, true, m_alien[i].get_speed(), m_alien[i].get_position(), m_tailleAlien, m_tailleTir));
-                        m_sprite_tir.push_back(sf::Sprite());
-                        m_sprite_tir.back().setTexture(m_img_tir);
-                        m_sprite_tir.back().setPosition(m_tir.back().get_position());
+                        m_tir.push_back(Projectile(mainClock.getElapsedTime() - pausedDuration, true, m_alien[i].get_speed(), m_alien[i].get_position(), m_alienSize, m_projectileSize));
+                        m_projectileSprite.push_back(sf::Sprite());
+                        m_projectileSprite.back().setTexture(m_projectileTexture);
+                        m_projectileSprite.back().setPosition(m_tir.back().get_position());
                     }
                 }
             }else{
                 //Destruction de l'alien sorti de l'�cran
                 m_alien.erase(m_alien.begin());
-                m_sprite_alien.erase(m_sprite_alien.begin());
+                m_alienSprite.erase(m_alienSprite.begin());
             }
 
             //D�placement tirs
             for(unsigned int i = 0 ; i < m_tir.size() && m_tir.size() > 0 ; i++)
             {
-                m_tir[i].moveForward(horlogePrincipale.getElapsedTime() - tempsPassePause);
-                m_sprite_tir[i].setPosition(m_tir[i].get_position());
+                m_tir[i].moveForward(mainClock.getElapsedTime() - pausedDuration);
+                m_projectileSprite[i].setPosition(m_tir[i].get_position());
             }
             //Destruction des tirs sortis de l'�cran
             if(m_tir.size() > 1)
             {
                 sf::Vector2f posTir = m_tir.front().get_position();
-                while(posTir.y > m_dimensionsJeu.y || posTir.y < -100)
+                while(posTir.y > m_gameDimensions.y || posTir.y < -100)
                 {
                     m_tir.erase(m_tir.begin());
-                    m_sprite_tir.erase(m_sprite_tir.begin());
+                    m_projectileSprite.erase(m_projectileSprite.begin());
                     if(m_tir.size() > 0)
                     {
                         posTir = m_tir.front().get_position();
@@ -289,7 +289,7 @@ void Game::Update(GameEngine* shootTheAliens)
 
             //Tests de collision
             sf::Vector2f posJoueur = m_joueur.get_position();
-            AABB aabbJoueur = {posJoueur.x, posJoueur.y, m_tailleJoueur.x, m_tailleJoueur.y};
+            AABB aabbJoueur = {posJoueur.x, posJoueur.y, m_playerSize.x, m_playerSize.y};
             sf::Vector2f posTir;
 
             vector<Projectile>::iterator iteratorTir;
@@ -300,11 +300,11 @@ void Game::Update(GameEngine* shootTheAliens)
             for(unsigned int i=0 ; i < m_alien.size() ; i++)
             {
                 posAlien = m_alien[i].get_position();
-                AABB aabbAlien = {posAlien.x, posAlien.y, m_tailleAlien.x, m_tailleAlien.y};
+                AABB aabbAlien = {posAlien.x, posAlien.y, m_alienSize.x, m_alienSize.y};
                 if(m_alien[i].is_alive() == true && Collision(aabbJoueur, aabbAlien))
                 {
-                    m_joueur.set_alive(horlogePrincipale.getElapsedTime() - tempsPassePause, false);
-                    m_alien[i].set_alive(horlogePrincipale.getElapsedTime() - tempsPassePause, false);
+                    m_joueur.set_alive(mainClock.getElapsedTime() - pausedDuration, false);
+                    m_alien[i].set_alive(mainClock.getElapsedTime() - pausedDuration, false);
                 }
             }
 
@@ -315,26 +315,26 @@ void Game::Update(GameEngine* shootTheAliens)
                 if(m_tir[i].get_enemy())
                 {
                     posTir = m_tir[i].get_position();
-                    AABB aabbTir = {posTir.x, posTir.y, m_tailleTir.x, m_tailleTir.y};
-                    if(m_joueur.is_alive() == true && Collision(aabbJoueur, aabbTir)) m_joueur.set_alive(horlogePrincipale.getElapsedTime() - tempsPassePause, false);
+                    AABB aabbTir = {posTir.x, posTir.y, m_projectileSize.x, m_projectileSize.y};
+                    if(m_joueur.is_alive() == true && Collision(aabbJoueur, aabbTir)) m_joueur.set_alive(mainClock.getElapsedTime() - pausedDuration, false);
                 } //Tirs-Aliens
                 else if(!(m_tir[i].get_enemy()))
                 {
                     posTir = m_tir[i].get_position();
-                    AABB aabbTir = {posTir.x, posTir.y, m_tailleTir.x, m_tailleTir.y};
+                    AABB aabbTir = {posTir.x, posTir.y, m_projectileSize.x, m_projectileSize.y};
                     for(unsigned int a=0 ; a < m_alien.size() ; a++)
                     {
                         posAlien = m_alien[a].get_position();
-                        AABB aabbAlien = {posAlien.x, posAlien.y, m_tailleAlien.x, m_tailleAlien.y};
+                        AABB aabbAlien = {posAlien.x, posAlien.y, m_alienSize.x, m_alienSize.y};
                         if(m_alien[a].is_alive() == true && Collision(aabbTir, aabbAlien))
                         {
                             m_score++;
-                            m_alien[a].set_alive(horlogePrincipale.getElapsedTime() - tempsPassePause, false);
+                            m_alien[a].set_alive(mainClock.getElapsedTime() - pausedDuration, false);
 
                             iteratorTir = m_tir.begin() + i;
                             m_tir.erase(iteratorTir);
-                            iteratorSprite = m_sprite_tir.begin() + i;
-                            m_sprite_tir.erase(iteratorSprite);
+                            iteratorSprite = m_projectileSprite.begin() + i;
+                            m_projectileSprite.erase(iteratorSprite);
                         }
                     }
                 }
@@ -347,20 +347,20 @@ void Game::Update(GameEngine* shootTheAliens)
                 {
                     if(m_alien[i].get_opacity() == 255)
                     {
-                        m_explosion.push_back(Explosion(horlogePrincipale.getElapsedTime() - tempsPassePause, m_alien[i].get_position(), m_tailleAlien, m_img_explosion.getSize().y, m_alien[i].get_speed()));
-                        m_sprite_explosion.push_back(sf::Sprite());
-                        m_sprite_explosion.back().setTexture(m_img_explosion);
-                        m_sprite_explosion.back().setTextureRect(sf::IntRect(0, 0, 100, 100));
-                        m_sprite_explosion.back().setPosition(m_explosion.back().get_position());
+                        m_explosion.push_back(Explosion(mainClock.getElapsedTime() - pausedDuration, m_alien[i].get_position(), m_alienSize, m_explosionTexture.getSize().y, m_alien[i].get_speed()));
+                        m_explosionsSprite.push_back(sf::Sprite());
+                        m_explosionsSprite.back().setTexture(m_explosionTexture);
+                        m_explosionsSprite.back().setTextureRect(sf::IntRect(0, 0, 100, 100));
+                        m_explosionsSprite.back().setPosition(m_explosion.back().get_position());
                     }
-                    m_alien[i].die(horlogePrincipale.getElapsedTime() - tempsPassePause);
-                    m_sprite_alien[i].setColor(sf::Color(255, 255, 255, m_alien[i].get_opacity()));
+                    m_alien[i].die(mainClock.getElapsedTime() - pausedDuration);
+                    m_alienSprite[i].setColor(sf::Color(255, 255, 255, m_alien[i].get_opacity()));
                     if(m_alien[i].get_opacity() == 0)
                     {
                         iteratorAlien = m_alien.begin() + i;
                         m_alien.erase(iteratorAlien);
-                        iteratorSprite = m_sprite_alien.begin() + i;
-                        m_sprite_alien.erase(iteratorSprite);
+                        iteratorSprite = m_alienSprite.begin() + i;
+                        m_alienSprite.erase(iteratorSprite);
                     }
                 }
             }
@@ -369,19 +369,19 @@ void Game::Update(GameEngine* shootTheAliens)
             {
                 if(m_joueur.get_opacity() == 255)
                 {
-                    m_explosion.push_back(Explosion(horlogePrincipale.getElapsedTime() - tempsPassePause, m_joueur.get_position(), m_tailleJoueur, m_img_explosion.getSize().y, 0));
-                    m_sprite_explosion.push_back(sf::Sprite());
-                    m_sprite_explosion.back().setTexture(m_img_explosion);
-                    m_sprite_explosion.back().setTextureRect(sf::IntRect(0, 0, 100, 100));
-                    m_sprite_explosion.back().setPosition(m_explosion.back().get_position());
+                    m_explosion.push_back(Explosion(mainClock.getElapsedTime() - pausedDuration, m_joueur.get_position(), m_playerSize, m_explosionTexture.getSize().y, 0));
+                    m_explosionsSprite.push_back(sf::Sprite());
+                    m_explosionsSprite.back().setTexture(m_explosionTexture);
+                    m_explosionsSprite.back().setTextureRect(sf::IntRect(0, 0, 100, 100));
+                    m_explosionsSprite.back().setPosition(m_explosion.back().get_position());
                 }
-                m_joueur.die(horlogePrincipale.getElapsedTime() - tempsPassePause);
-                m_sprite_joueur.setColor(sf::Color(255, 255, 255, m_joueur.get_opacity()));
+                m_joueur.die(mainClock.getElapsedTime() - pausedDuration);
+                m_playerSprite.setColor(sf::Color(255, 255, 255, m_joueur.get_opacity()));
                 if(m_joueur.get_opacity() == 0)
                 {
                     m_scoreFinal = m_score;
-                    m_finPartie = true;
-                    m_dansLeJeu = false;
+                    m_gameOver = true;
+                    m_isPLaying = false;
                 }
             }
             //Gestion des explosions
@@ -389,31 +389,31 @@ void Game::Update(GameEngine* shootTheAliens)
             {
                 for(unsigned int i = 0 ; i < m_explosion.size() ; i++)
                 {
-                    m_explosion[i].changeState(horlogePrincipale.getElapsedTime() - tempsPassePause);
-                    m_sprite_explosion[i].setTextureRect(sf::IntRect(100*m_explosion[i].get_state(), 0, 100, 100));
-                    m_explosion[i].moveForward(horlogePrincipale.getElapsedTime() - tempsPassePause);
-                    m_sprite_explosion[i].setPosition(m_explosion[i].get_position());
+                    m_explosion[i].changeState(mainClock.getElapsedTime() - pausedDuration);
+                    m_explosionsSprite[i].setTextureRect(sf::IntRect(100*m_explosion[i].get_state(), 0, 100, 100));
+                    m_explosion[i].moveForward(mainClock.getElapsedTime() - pausedDuration);
+                    m_explosionsSprite[i].setPosition(m_explosion[i].get_position());
                 }
                 if(m_explosion.front().get_state() >= 9)
                 {
                     m_explosion.erase(m_explosion.begin());
-                    m_sprite_explosion.erase(m_sprite_explosion.begin());
+                    m_explosionsSprite.erase(m_explosionsSprite.begin());
                 }
             }
             //Animation des vaisseaux
-            m_sprite_joueur.setTextureRect(sf::IntRect(0, 0, m_tailleJoueur.x, m_tailleJoueur.y));
-            m_joueur.changeState(horlogePrincipale.getElapsedTime() - tempsPassePause);
-            m_sprite_joueur.setTextureRect(sf::IntRect(m_tailleJoueur.x*m_joueur.get_state(), 0, m_tailleJoueur.x, m_tailleJoueur.y));
+            m_playerSprite.setTextureRect(sf::IntRect(0, 0, m_playerSize.x, m_playerSize.y));
+            m_joueur.changeState(mainClock.getElapsedTime() - pausedDuration);
+            m_playerSprite.setTextureRect(sf::IntRect(m_playerSize.x*m_joueur.get_state(), 0, m_playerSize.x, m_playerSize.y));
             for(unsigned int i = 0 ; i < m_alien.size() ; i++)
             {
-                m_sprite_alien[i].setTextureRect(sf::IntRect(0, 0, m_tailleAlien.x, m_tailleAlien.y));
-                m_alien[i].changeState(horlogePrincipale.getElapsedTime() - tempsPassePause);
-                m_sprite_alien[i].setTextureRect(sf::IntRect(m_tailleAlien.x*m_alien[i].get_state(), 0, m_tailleAlien.x, m_tailleAlien.y));
+                m_alienSprite[i].setTextureRect(sf::IntRect(0, 0, m_alienSize.x, m_alienSize.y));
+                m_alien[i].changeState(mainClock.getElapsedTime() - pausedDuration);
+                m_alienSprite[i].setTextureRect(sf::IntRect(m_alienSize.x*m_alien[i].get_state(), 0, m_alienSize.x, m_alienSize.y));
             }
         }
     }else{
-        m_fond->update(horlogePrincipale.getElapsedTime() - tempsPassePause);
-        m_start.setPosition(m_dimensionsJeu.x/2, m_dimensionsJeu.y/3);
+        m_fond->update(mainClock.getElapsedTime() - pausedDuration);
+        m_start.setPosition(m_gameDimensions.x/2, m_gameDimensions.y/3);
 
         //Ouverture des highscores
         ifstream highscore("highscore", ios::in);
@@ -423,10 +423,10 @@ void Game::Update(GameEngine* shootTheAliens)
             highscore.close();
         }
 
-        if(m_finPartie)
+        if(m_gameOver)
         {
             //On coupe le son des strafe
-            SoundManager::getInstance()->playStrafeSound(false, horlogePrincipale.getElapsedTime() - tempsPassePause, true);
+            SoundManager::getInstance()->playStrafeSound(false, mainClock.getElapsedTime() - pausedDuration, true);
             //Enregistrement du highscore
             if(m_score > m_highscore)
             {
@@ -439,33 +439,33 @@ void Game::Update(GameEngine* shootTheAliens)
                 }
             }
             //Enregistrement des performances
-            ofstream historique("history", ios::out | ios::app);
-            if(historique)
+            ofstream historyFile("history", ios::out | ios::app);
+            if(historyFile)
             {
-                float ratioKill;
-                (m_aliensTotal > 0) ? (ratioKill = (float)m_scoreFinal / (float)m_aliensTotal) : (ratioKill = 0);
-                historique << m_niveau << ";" << m_scoreFinal << ";" << m_aliensTotal << ";" << ratioKill << "\n";
-                historique.close();
+                float killRatio;
+                (m_aliensTotal > 0) ? (killRatio = (float)m_scoreFinal / (float)m_aliensTotal) : (killRatio = 0);
+                historyFile << m_level << ";" << m_scoreFinal << ";" << m_aliensTotal << ";" << killRatio << "\n";
+                historyFile.close();
             }
 
             //R�initialisation pour une nouvelle partie
             m_score = 0;
-            m_niveau = 1;
-            m_mortsNiveauPrec = 0;
-            m_morts = 0;
+            m_level = 1;
+            m_previousLevelDeaths = 0;
+            m_deaths = 0;
             m_aliensTotal = 0;
-            tempsPasseNiveau = horlogePrincipale.getElapsedTime() - tempsPassePause;
-            tempsPassePop = horlogePrincipale.getElapsedTime() - tempsPassePause;
+            tempsPasseNiveau = mainClock.getElapsedTime() - pausedDuration;
+            tempsPassePop = mainClock.getElapsedTime() - pausedDuration;
             m_alien.clear();
-            m_sprite_alien.clear();
+            m_alienSprite.clear();
             m_tir.clear();
-            m_sprite_tir.clear();
+            m_projectileSprite.clear();
             m_explosion.clear();
-            m_sprite_explosion.clear();
-            m_finPartie = false;
-            m_joueur.set_alive(horlogePrincipale.getElapsedTime() - tempsPassePause, true);
+            m_explosionsSprite.clear();
+            m_gameOver = false;
+            m_joueur.set_alive(mainClock.getElapsedTime() - pausedDuration, true);
             m_joueur.set_opacity(255);
-            m_sprite_joueur.setColor(sf::Color(255, 255, 255, 255));
+            m_playerSprite.setColor(sf::Color(255, 255, 255, 255));
         }
 
         //affichage du score et highscore
@@ -475,40 +475,40 @@ void Game::Update(GameEngine* shootTheAliens)
         score += convert.str();
         convert.str("");
         m_texteScorePrecedent.setString(score);
-        m_rectangle = m_texteScorePrecedent.getLocalBounds();
-        m_texteScorePrecedent.setOrigin(m_rectangle.width/2, m_rectangle.height/2);
-        m_texteScorePrecedent.setPosition(m_dimensionsJeu.x/2, m_dimensionsJeu.y/2);
+        m_fontsm_bounds = m_texteScorePrecedent.getLocalBounds();
+        m_texteScorePrecedent.setOrigin(m_fontsm_bounds.width/2, m_fontsm_bounds.height/2);
+        m_texteScorePrecedent.setPosition(m_gameDimensions.x/2, m_gameDimensions.y/2);
 
         score = "Highscore : ";
         convert << m_highscore;
         score += convert.str();
         m_texteHighscore.setString(score);
-        m_rectangle = m_texteHighscore.getLocalBounds();
-        m_texteHighscore.setOrigin(m_rectangle.width/2, m_rectangle.height/2);
-        m_texteHighscore.setPosition(m_dimensionsJeu.x/2, m_dimensionsJeu.y/3*2);
+        m_fontsm_bounds = m_texteHighscore.getLocalBounds();
+        m_texteHighscore.setOrigin(m_fontsm_bounds.width/2, m_fontsm_bounds.height/2);
+        m_texteHighscore.setPosition(m_gameDimensions.x/2, m_gameDimensions.y/3*2);
 
-        m_sprite_joueur.setTexture(m_img_joueur);
-        m_joueur.set_player(m_dimensionsJeu, sf::Vector2u(m_tailleJoueur.x, m_tailleJoueur.y));
+        m_playerSprite.setTexture(m_playerTexture);
+        m_joueur.set_player(m_gameDimensions, sf::Vector2u(m_playerSize.x, m_playerSize.y));
     }
 
-    m_vuePrincipale.reset(sf::FloatRect(0, 0, 400, 700));
-    m_vuePrincipale.setSize(400, 700);
+    m_mainView.reset(sf::FloatRect(0, 0, 400, 700));
+    m_mainView.setSize(400, 700);
     sf::Vector2f facteurViewport;
-    if((float)m_dimensionsFenetre.x/m_dimensionsFenetre.y < (float)m_dimensionsJeu.x/m_dimensionsJeu.y)
+    if((float)m_windowDimensions.x/m_windowDimensions.y < (float)m_gameDimensions.x/m_gameDimensions.y)
     {
         //largeur de fenetre petite
         facteurViewport.x = 1;
-        facteurViewport.y = ((float)m_dimensionsFenetre.x/m_dimensionsFenetre.y)*((float)m_dimensionsJeu.y/m_dimensionsJeu.x);
-        m_vuePrincipale.setViewport(sf::FloatRect(0, (float)(1-facteurViewport.y) / 2, facteurViewport.x, facteurViewport.y));
+        facteurViewport.y = ((float)m_windowDimensions.x/m_windowDimensions.y)*((float)m_gameDimensions.y/m_gameDimensions.x);
+        m_mainView.setViewport(sf::FloatRect(0, (float)(1-facteurViewport.y) / 2, facteurViewport.x, facteurViewport.y));
     }else{
         //largeur de fenetre grande
-        facteurViewport.x = ((float)m_dimensionsFenetre.y/m_dimensionsFenetre.x)*((float)m_dimensionsJeu.x/m_dimensionsJeu.y);
+        facteurViewport.x = ((float)m_windowDimensions.y/m_windowDimensions.x)*((float)m_gameDimensions.x/m_gameDimensions.y);
         facteurViewport.y = 1;
-        m_vuePrincipale.setViewport(sf::FloatRect((float)(1-facteurViewport.x)/2, 0, facteurViewport.x, facteurViewport.y));
+        m_mainView.setViewport(sf::FloatRect((float)(1-facteurViewport.x)/2, 0, facteurViewport.x, facteurViewport.y));
     }
 
     SoundManager::getInstance()->cleanupFinishedSounds();
-    shootTheAliens->getFenetre()->setView(m_vuePrincipale);
+    shootTheAliens->getFenetre()->setView(m_mainView);
 }
 
 void Game::Draw(GameEngine* shootTheAliens)
@@ -517,24 +517,24 @@ void Game::Draw(GameEngine* shootTheAliens)
 
     m_fond->draw(shootTheAliens);
 
-    if(m_dansLeJeu)
+    if(m_isPLaying)
     {
-        for(unsigned int i = 0 ; i < m_sprite_tir.size() ; i++)
+        for(unsigned int i = 0 ; i < m_projectileSprite.size() ; i++)
         {
-            shootTheAliens->getFenetre()->draw(m_sprite_tir[i]);
+            shootTheAliens->getFenetre()->draw(m_projectileSprite[i]);
         }
-        shootTheAliens->getFenetre()->draw(m_sprite_joueur);
-        for(unsigned int i = 0 ; i < m_sprite_alien.size() && m_sprite_alien.size() > 0 ; i++)
+        shootTheAliens->getFenetre()->draw(m_playerSprite);
+        for(unsigned int i = 0 ; i < m_alienSprite.size() && m_alienSprite.size() > 0 ; i++)
         {
-            shootTheAliens->getFenetre()->draw(m_sprite_alien[i]);
+            shootTheAliens->getFenetre()->draw(m_alienSprite[i]);
         }
-        for(unsigned int i = 0 ; i < m_sprite_explosion.size() && m_sprite_explosion.size() > 0 ; i++)
+        for(unsigned int i = 0 ; i < m_explosionsSprite.size() && m_explosionsSprite.size() > 0 ; i++)
         {
-            shootTheAliens->getFenetre()->draw(m_sprite_explosion[i]);
+            shootTheAliens->getFenetre()->draw(m_explosionsSprite[i]);
         }
-        if(m_pause)
+        if(m_isPaused)
         {
-            shootTheAliens->getFenetre()->draw(m_fondPause);
+            shootTheAliens->getFenetre()->draw(m_pauseBackground);
             shootTheAliens->getFenetre()->draw(m_textePause);
         }
         shootTheAliens->getFenetre()->draw(m_texteScore);

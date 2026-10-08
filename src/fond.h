@@ -10,15 +10,15 @@ class Fond
         Fond(sf::Vector2u dimensionsJeu);
         virtual ~Fond();
 
-        void update(sf::Time tempsPassePrincipal);
+        void update(sf::Time elapsedTime);
         void draw(GameEngine* shootTheAliens);
     private:
-        sf::Vector2u m_dimensionsJeu;
+        sf::Vector2u m_gameDimensions;
 
-        sf::Texture *m_img_fond;
-        sf::Sprite *m_sprite_fond;
+        sf::Texture *m_backgroudTexture;
+        sf::Sprite *m_backgroundSprite;
 
-        sf::Time m_tempsPasseFond;
+        sf::Time m_backgroundElapsedTime;
 };
 
 #endif // FOND_H

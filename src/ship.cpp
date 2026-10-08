@@ -8,7 +8,7 @@ Ship::Ship()
     m_vivant = true;
     m_opacite = 255;
     m_etat = 0;
-    m_vitesse = 0;
+    m_speed = 0;
     m_id = Ship::nbrDeVaisseaux;
     Ship::nbrDeVaisseaux++;
 }
@@ -17,12 +17,12 @@ Ship::~Ship()
 {
 }
 
-void Ship::die(sf::Time tempsPassePrincipal)
+void Ship::die(sf::Time elapsedTime)
 {
     if(m_opacite > 0)
     {
-        m_opacite = m_opacite - 255 * (tempsPassePrincipal.asSeconds() - m_tempsPasseMourir.asSeconds()) * 2;
-        m_tempsPasseMourir = tempsPassePrincipal;
+        m_opacite = m_opacite - 255 * (elapsedTime.asSeconds() - m_deathTime.asSeconds()) * 2;
+        m_deathTime = elapsedTime;
     }
     else if(m_opacite < 0)
     {
@@ -34,20 +34,20 @@ void Ship::die(sf::Time tempsPassePrincipal)
     }
 }
 
-bool Ship::shoot(sf::Time tempsPassePrincipal)
+bool Ship::shoot(sf::Time elapsedTime)
 {
     m_tirer = false;
-    if(tempsPassePrincipal.asSeconds() - m_tempsPasseTirer.asSeconds() > 1 / m_freqDeTir)
+    if(elapsedTime.asSeconds() - m_lastShotTime.asSeconds() > 1 / m_freqDeTir)
     {
-        m_tempsPasseTirer = tempsPassePrincipal;
+        m_lastShotTime = elapsedTime;
         m_tirer = true;
     }
     return m_tirer;
 }
 
-void Ship::changeState(sf::Time tempsPassePrincipal)
+void Ship::changeState(sf::Time elapsedTime)
 {
-    if((tempsPassePrincipal.asMilliseconds() - m_tempsPasseEtat.asMilliseconds()) >= 75)
+    if((elapsedTime.asMilliseconds() - m_lastStateChangeTime.asMilliseconds()) >= 75)
     {
         if(m_etat >= nbrEtat-2)
         {
@@ -55,9 +55,9 @@ void Ship::changeState(sf::Time tempsPassePrincipal)
         }else{
             m_etat++;
         }
-        m_tempsPasseEtat = tempsPassePrincipal;
+        m_lastStateChangeTime = elapsedTime;
     }
-    if((tempsPassePrincipal.asMilliseconds() - m_tempsPasseRupture.asMilliseconds()) >= 30)
+    if((elapsedTime.asMilliseconds() - m_tempsPasseRupture.asMilliseconds()) >= 30)
     {
         if(m_etat == nbrEtat-1)
         {
@@ -68,7 +68,7 @@ void Ship::changeState(sf::Time tempsPassePrincipal)
                 m_etat = nbrEtat-1;
             }
         }
-        m_tempsPasseRupture = tempsPassePrincipal;
+        m_tempsPasseRupture = elapsedTime;
     }
 }
 

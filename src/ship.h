@@ -11,9 +11,9 @@ class Ship
         Ship();
         virtual ~Ship();
 
-        void die(sf::Time tempsPassePrincipal);
-        bool shoot(sf::Time tempsPassePrincipal);
-        void changeState(sf::Time tempsPassePrincipal);
+        void die(sf::Time elapsedTime);
+        bool shoot(sf::Time elapsedTime);
+        void changeState(sf::Time elapsedTime);
         static sf::Vector2u get_size(sf::Vector2u tailleJoueur);
         const sf::Vector2f get_position() const
         {
@@ -39,23 +39,23 @@ class Ship
         {
             return m_id;
         }
-        void set_alive(sf::Time tempsPassePrincipal, bool vivant)
+        void set_alive(sf::Time elapsedTime, bool alive)
         {
-            m_vivant = vivant;
-            m_tempsPasseMourir = tempsPassePrincipal;
+            m_vivant = alive;
+            m_deathTime = elapsedTime;
         }
-        void set_opacity(int opacite)
+        void set_opacity(int opacity)
         {
-            m_opacite = opacite;
+            m_opacite = opacity;
         }
     protected:
-        int m_vitesse;
+        int m_speed;
         bool m_tirer;
         float m_freqDeTir;
         sf::Vector2f m_position;
-        sf::Vector2u m_tailleVaisseau;
+        sf::Vector2u m_shipSize;
 
-        sf::Time m_tempsPasseMouvement;
+        sf::Time m_lastMovementTime;
     private:
         bool m_vivant;
         int m_opacite;
@@ -64,9 +64,9 @@ class Ship
         static int nbrDeVaisseaux;
         int m_id;
 
-        sf::Time m_tempsPasseTirer;
-        sf::Time m_tempsPasseMourir;
-        sf::Time m_tempsPasseEtat;
+        sf::Time m_lastShotTime;
+        sf::Time m_deathTime;
+        sf::Time m_lastStateChangeTime;
         sf::Time m_tempsPasseRupture;
 };
 

@@ -132,18 +132,18 @@ void SoundManager::playSound(Sons type)
     }
 }
 
-void SoundManager::playStrafeSound(bool stop, sf::Time tempsPassePrincipal, bool stopImmediately)
+void SoundManager::playStrafeSound(bool stop, sf::Time elapsedTime, bool stopImmediately)
 {
     if(stopImmediately)
     {
         m_son_strafe[0].setVolume(0);
         m_son_strafe[1].setVolume(0);
     }else{
-        float multiplicateur = tempsPassePrincipal.asSeconds() - m_tempsPasseAttenuation.asSeconds();
+        float multiplier = elapsedTime.asSeconds() - m_lastFadeTime.asSeconds();
         if(stop && m_son_strafe[0].getVolume() > 5)
         {
-            m_son_strafe[0].setVolume(m_son_strafe[0].getVolume() - m_volumeStrafe / m_vitesseAttenuationStrafe * multiplicateur);
-            m_son_strafe[1].setVolume(m_son_strafe[1].getVolume() - m_volumeStrafe / m_vitesseAttenuationStrafe * multiplicateur);
+            m_son_strafe[0].setVolume(m_son_strafe[0].getVolume() - m_volumeStrafe / m_vitesseAttenuationStrafe * multiplier);
+            m_son_strafe[1].setVolume(m_son_strafe[1].getVolume() - m_volumeStrafe / m_vitesseAttenuationStrafe * multiplier);
             if(m_son_strafe[0].getVolume() <= 5)
             {
                 m_son_strafe[0].setVolume(0);
@@ -152,20 +152,20 @@ void SoundManager::playStrafeSound(bool stop, sf::Time tempsPassePrincipal, bool
         }
         else if(!stop && m_son_strafe[0].getVolume() < m_volumeStrafe)
         {
-            m_son_strafe[0].setVolume(m_son_strafe[0].getVolume() + m_volumeStrafe / m_vitesseAttenuationStrafe * multiplicateur);
-            m_son_strafe[1].setVolume(m_son_strafe[1].getVolume() + m_volumeStrafe / m_vitesseAttenuationStrafe * multiplicateur);
+            m_son_strafe[0].setVolume(m_son_strafe[0].getVolume() + m_volumeStrafe / m_vitesseAttenuationStrafe * multiplier);
+            m_son_strafe[1].setVolume(m_son_strafe[1].getVolume() + m_volumeStrafe / m_vitesseAttenuationStrafe * multiplier);
         }
-        m_tempsPasseAttenuation = tempsPassePrincipal;
+        m_lastFadeTime = elapsedTime;
     }
 }
 
-void SoundManager::playEngineSound(int proprietaire, bool stop)
+void SoundManager::playEngineSound(int ownerId, bool stop)
 {
     if(stop)
     {
-        m_son_reacteur.erase(proprietaire);
+        m_son_reacteur.erase(ownerId);
     }else{
-        std::deque<sf::Sound> *pointeur = &m_son_reacteur[proprietaire]; //Pour optimiser la recherche dans la std::map<int, sf::Sound>
+        std::deque<sf::Sound> *pointeur = &m_son_reacteur[ownerId]; //Pour optimiser la recherche dans la std::map<int, sf::Sound>
         for(int i=0 ; i<m_nbrSonsReacteur ; i++)
         {
             pointeur->push_back(sf::Sound(m_buffer_reacteur[i]));
@@ -176,11 +176,11 @@ void SoundManager::playEngineSound(int proprietaire, bool stop)
     }
 }
 
-void SoundManager::fx(sf::Time tempsPassePrincipal)
+void SoundManager::fx(sf::Time elapsedTime)
 {
-    if(tempsPassePrincipal.asSeconds() - m_tempsPasseFX.asSeconds() > 60)
+    if(elapsedTime.asSeconds() - m_lastEffectTime.asSeconds() > 60)
     {
         m_son_fx[rand()%m_nbrFX].play();
-        m_tempsPasseFX = tempsPassePrincipal;
+        m_lastEffectTime = elapsedTime;
     }
 }

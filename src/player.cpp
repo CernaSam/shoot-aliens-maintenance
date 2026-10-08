@@ -15,60 +15,60 @@ Player::~Player()
 {
 }
 
-void Player::set_player(sf::Vector2u dimensionJeu, sf::Vector2u tailleVaisseau)
+void Player::set_player(sf::Vector2u gameDimensions, sf::Vector2u shipSize)
 {
-    m_position.x = dimensionJeu.x / 2 - tailleVaisseau.x / 2;
-    m_position.y = dimensionJeu.y - tailleVaisseau.y - 10;
-    m_vitesseMax = dimensionJeu.x * 1.5;
-    m_tailleVaisseau = tailleVaisseau;
-    m_dimensionFenetre = dimensionJeu;
+    m_position.x = gameDimensions.x / 2 - shipSize.x / 2;
+    m_position.y = gameDimensions.y - shipSize.y - 10;
+    m_maxSpeed = gameDimensions.x * 1.5;
+    m_shipSize = shipSize;
+    m_dimensionFenetre = gameDimensions;
 }
 
-void Player::move(sf::Time tempsPassePrincipal, int direction)
+void Player::move(sf::Time elapsedTime, int direction)
 {
     if(this->is_alive())
     {
-        m_acceleration = m_vitesseMax * (tempsPassePrincipal.asSeconds() - m_tempsPasseMouvement.asSeconds()) * 6;
+        m_acceleration = m_maxSpeed * (elapsedTime.asSeconds() - m_lastMovementTime.asSeconds()) * 6;
 
-        if(m_vitesse == 0) m_direction = direction;
+        if(m_speed == 0) m_direction = direction;
 
         if(direction == m_direction && direction != IMMOBILE)
         {
-            m_vitesse = m_vitesse + m_acceleration;
+            m_speed = m_speed + m_acceleration;
         }
         else if(direction == IMMOBILE)
         {
-            m_vitesse = m_vitesse - m_acceleration;
+            m_speed = m_speed - m_acceleration;
         }else{
-            m_vitesse = m_vitesse - 2 * m_acceleration;
+            m_speed = m_speed - 2 * m_acceleration;
         }
 
-        if(m_vitesse > m_vitesseMax) m_vitesse = m_vitesseMax;
-        if(m_vitesse <= 0)
+        if(m_speed > m_maxSpeed) m_speed = m_maxSpeed;
+        if(m_speed <= 0)
         {
-            m_vitesse = 0;
+            m_speed = 0;
         }
 
         if(m_direction == GAUCHE)
         {
-            m_position.x = m_position.x - m_vitesse * (tempsPassePrincipal.asSeconds() - m_tempsPasseMouvement.asSeconds());
+            m_position.x = m_position.x - m_speed * (elapsedTime.asSeconds() - m_lastMovementTime.asSeconds());
         }
         else if(m_direction == DROITE)
         {
-            m_position.x = m_position.x + m_vitesse * (tempsPassePrincipal.asSeconds() - m_tempsPasseMouvement.asSeconds());
+            m_position.x = m_position.x + m_speed * (elapsedTime.asSeconds() - m_lastMovementTime.asSeconds());
         }
 
         if(m_position.x < 0)
         {
             m_position.x = 0;
-            m_vitesse = 0;
+            m_speed = 0;
         }
 
-        if(m_position.x > m_dimensionFenetre.x - m_tailleVaisseau.x)
+        if(m_position.x > m_dimensionFenetre.x - m_shipSize.x)
         {
-            m_position.x = m_dimensionFenetre.x - m_tailleVaisseau.x;
-            m_vitesse = 0;
+            m_position.x = m_dimensionFenetre.x - m_shipSize.x;
+            m_speed = 0;
         }
     }
-    m_tempsPasseMouvement = tempsPassePrincipal;
+    m_lastMovementTime = elapsedTime;
 }
