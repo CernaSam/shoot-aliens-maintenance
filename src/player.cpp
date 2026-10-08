@@ -15,7 +15,7 @@ Player::~Player()
 {
 }
 
-void Player::set_joueur(sf::Vector2u dimensionJeu, sf::Vector2u tailleVaisseau)
+void Player::set_player(sf::Vector2u dimensionJeu, sf::Vector2u tailleVaisseau)
 {
     m_position.x = dimensionJeu.x / 2 - tailleVaisseau.x / 2;
     m_position.y = dimensionJeu.y - tailleVaisseau.y - 10;
@@ -24,9 +24,9 @@ void Player::set_joueur(sf::Vector2u dimensionJeu, sf::Vector2u tailleVaisseau)
     m_dimensionFenetre = dimensionJeu;
 }
 
-void Player::deplacer(sf::Time tempsPassePrincipal, int direction)
+void Player::move(sf::Time tempsPassePrincipal, int direction)
 {
-    if(this->get_vivant())
+    if(this->is_alive())
     {
         m_acceleration = m_vitesseMax * (tempsPassePrincipal.asSeconds() - m_tempsPasseMouvement.asSeconds()) * 6;
 

@@ -31,12 +31,12 @@ class SoundManager
                 SoundManager::m_singleton = NULL;
             }
         }
-        void nettoyer();
+        void cleanupFinishedSounds();
         void pause(bool pause);
         void playPause(bool pause, sf::Sound *son);
-        void jouerSon(Sons type);
-        void jouerStrafe(bool stopper, sf::Time tempsPassePrincipal, bool tuer = false);
-        void jouerReacteur(int proprietaire, bool stopper);
+        void playSound(Sons type);
+        void playStrafeSound(bool stop, sf::Time tempsPassePrincipal, bool stopImmediately = false);
+        void playEngineSound(int proprietaire, bool stop);
         void fx(sf::Time tempsPassePrincipal);
     protected:
     private:

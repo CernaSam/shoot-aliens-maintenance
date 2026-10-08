@@ -11,9 +11,9 @@ class Player : public Ship
         Player();
         virtual ~Player();
 
-        void deplacer(sf::Time tempsPassePrincipal, int direction);
+        void move(sf::Time tempsPassePrincipal, int direction);
 
-        void set_joueur(sf::Vector2u dimensionJeu, sf::Vector2u tailleVaisseau);
+        void set_player(sf::Vector2u dimensionJeu, sf::Vector2u tailleVaisseau);
     private:
         sf::Vector2u m_dimensionFenetre;
         int m_vitesseMax;

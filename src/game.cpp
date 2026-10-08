@@ -78,8 +78,8 @@ void Game::Init()
     m_img_explosion.loadFromFile("ressources/images/explosion.png");
 
     m_tailleTir = m_img_tir.getSize();
-    m_tailleJoueur = Ship::get_taille(m_img_joueur.getSize());
-    m_tailleAlien = Ship::get_taille(m_img_alien.getSize());
+    m_tailleJoueur = Ship::get_size(m_img_joueur.getSize());
+    m_tailleAlien = Ship::get_size(m_img_alien.getSize());
 }
 
 void Game::Cleanup()
@@ -122,7 +122,7 @@ void Game::HandleEvents(GameEngine* shootTheAliens)
             if(event.key.code == sf::Keyboard::Space && m_dansLeJeu == false)
             {
                 m_dansLeJeu = true;
-                SoundManager::getInstance()->jouerReacteur(m_joueur.get_id(), false);
+                SoundManager::getInstance()->playEngineSound(m_joueur.get_id(), false);
             }
 
             if(event.key.code == sf::Keyboard::P && m_dansLeJeu)
@@ -195,7 +195,7 @@ void Game::Update(GameEngine* shootTheAliens)
             m_textePause.setPosition(m_dimensionsJeu.x/2, m_dimensionsJeu.y/2);
             m_fondPause.setSize(sf::Vector2f(m_dimensionsJeu.x, m_dimensionsJeu.y));
             m_fondPause.setFillColor(sf::Color(0,15,31,127));
-            SoundManager::getInstance()->jouerStrafe(false, horlogePrincipale.getElapsedTime() - tempsPassePause, true);
+            SoundManager::getInstance()->playStrafeSound(false, horlogePrincipale.getElapsedTime() - tempsPassePause, true);
         }else{
             m_fond->update(horlogePrincipale.getElapsedTime() - tempsPassePause);
             SoundManager::getInstance()->fx(horlogePrincipale.getElapsedTime() - tempsPassePause);
@@ -217,12 +217,12 @@ void Game::Update(GameEngine* shootTheAliens)
 
 
             //D�placements du joueur
-            m_joueur.deplacer(horlogePrincipale.getElapsedTime() - tempsPassePause, m_deplacerJoueur);
+            m_joueur.move(horlogePrincipale.getElapsedTime() - tempsPassePause, m_deplacerJoueur);
             m_sprite_joueur.setPosition(m_joueur.get_position());
-            if(m_deplacerJoueur == GAUCHE || m_deplacerJoueur == DROITE) SoundManager::getInstance()->jouerStrafe(false, horlogePrincipale.getElapsedTime() - tempsPassePause);
-            else SoundManager::getInstance()->jouerStrafe(true, horlogePrincipale.getElapsedTime() - tempsPassePause);
+            if(m_deplacerJoueur == GAUCHE || m_deplacerJoueur == DROITE) SoundManager::getInstance()->playStrafeSound(false, horlogePrincipale.getElapsedTime() - tempsPassePause);
+            else SoundManager::getInstance()->playStrafeSound(true, horlogePrincipale.getElapsedTime() - tempsPassePause);
             //Projectile du joueur
-            if(m_joueur.tirer(horlogePrincipale.getElapsedTime() - tempsPassePause))
+            if(m_joueur.shoot(horlogePrincipale.getElapsedTime() - tempsPassePause))
             {
                 m_tir.push_back(Projectile(horlogePrincipale.getElapsedTime() - tempsPassePause, false, 0, m_joueur.get_position(), m_tailleJoueur, m_tailleTir));
                 m_sprite_tir.push_back(sf::Sprite());
@@ -250,11 +250,11 @@ void Game::Update(GameEngine* shootTheAliens)
                 {
                     //D�placements alien
                     m_sprite_alien[i].setPosition(sf::Vector2f(m_alien[i].get_position()));
-                    m_alien[i].avancer(horlogePrincipale.getElapsedTime() - tempsPassePause);
+                    m_alien[i].moveForward(horlogePrincipale.getElapsedTime() - tempsPassePause);
                     //Projectile des aliens
-                    if(m_alien[i].get_vivant() == true && m_alien[i].tirer(horlogePrincipale.getElapsedTime() - tempsPassePause))
+                    if(m_alien[i].is_alive() == true && m_alien[i].shoot(horlogePrincipale.getElapsedTime() - tempsPassePause))
                     {
-                        m_tir.push_back(Projectile(horlogePrincipale.getElapsedTime() - tempsPassePause, true, m_alien[i].get_vitesse(), m_alien[i].get_position(), m_tailleAlien, m_tailleTir));
+                        m_tir.push_back(Projectile(horlogePrincipale.getElapsedTime() - tempsPassePause, true, m_alien[i].get_speed(), m_alien[i].get_position(), m_tailleAlien, m_tailleTir));
                         m_sprite_tir.push_back(sf::Sprite());
                         m_sprite_tir.back().setTexture(m_img_tir);
                         m_sprite_tir.back().setPosition(m_tir.back().get_position());
@@ -269,7 +269,7 @@ void Game::Update(GameEngine* shootTheAliens)
             //D�placement tirs
             for(unsigned int i = 0 ; i < m_tir.size() && m_tir.size() > 0 ; i++)
             {
-                m_tir[i].avancer(horlogePrincipale.getElapsedTime() - tempsPassePause);
+                m_tir[i].moveForward(horlogePrincipale.getElapsedTime() - tempsPassePause);
                 m_sprite_tir[i].setPosition(m_tir[i].get_position());
             }
             //Destruction des tirs sortis de l'�cran
@@ -301,10 +301,10 @@ void Game::Update(GameEngine* shootTheAliens)
             {
                 posAlien = m_alien[i].get_position();
                 AABB aabbAlien = {posAlien.x, posAlien.y, m_tailleAlien.x, m_tailleAlien.y};
-                if(m_alien[i].get_vivant() == true && Collision(aabbJoueur, aabbAlien))
+                if(m_alien[i].is_alive() == true && Collision(aabbJoueur, aabbAlien))
                 {
-                    m_joueur.set_vivant(horlogePrincipale.getElapsedTime() - tempsPassePause, false);
-                    m_alien[i].set_vivant(horlogePrincipale.getElapsedTime() - tempsPassePause, false);
+                    m_joueur.set_alive(horlogePrincipale.getElapsedTime() - tempsPassePause, false);
+                    m_alien[i].set_alive(horlogePrincipale.getElapsedTime() - tempsPassePause, false);
                 }
             }
 
@@ -312,13 +312,13 @@ void Game::Update(GameEngine* shootTheAliens)
             for(unsigned int i=0 ; i < m_tir.size() ; i++)
             {
                 //Tirs-Player
-                if(m_tir[i].get_ennemi())
+                if(m_tir[i].get_enemy())
                 {
                     posTir = m_tir[i].get_position();
                     AABB aabbTir = {posTir.x, posTir.y, m_tailleTir.x, m_tailleTir.y};
-                    if(m_joueur.get_vivant() == true && Collision(aabbJoueur, aabbTir)) m_joueur.set_vivant(horlogePrincipale.getElapsedTime() - tempsPassePause, false);
+                    if(m_joueur.is_alive() == true && Collision(aabbJoueur, aabbTir)) m_joueur.set_alive(horlogePrincipale.getElapsedTime() - tempsPassePause, false);
                 } //Tirs-Aliens
-                else if(!(m_tir[i].get_ennemi()))
+                else if(!(m_tir[i].get_enemy()))
                 {
                     posTir = m_tir[i].get_position();
                     AABB aabbTir = {posTir.x, posTir.y, m_tailleTir.x, m_tailleTir.y};
@@ -326,10 +326,10 @@ void Game::Update(GameEngine* shootTheAliens)
                     {
                         posAlien = m_alien[a].get_position();
                         AABB aabbAlien = {posAlien.x, posAlien.y, m_tailleAlien.x, m_tailleAlien.y};
-                        if(m_alien[a].get_vivant() == true && Collision(aabbTir, aabbAlien))
+                        if(m_alien[a].is_alive() == true && Collision(aabbTir, aabbAlien))
                         {
                             m_score++;
-                            m_alien[a].set_vivant(horlogePrincipale.getElapsedTime() - tempsPassePause, false);
+                            m_alien[a].set_alive(horlogePrincipale.getElapsedTime() - tempsPassePause, false);
 
                             iteratorTir = m_tir.begin() + i;
                             m_tir.erase(iteratorTir);
@@ -343,19 +343,19 @@ void Game::Update(GameEngine* shootTheAliens)
             //Aliens
             for(unsigned int i=0 ; i < m_alien.size() ; i++)
             {
-                if(m_alien[i].get_vivant() == false)
+                if(m_alien[i].is_alive() == false)
                 {
-                    if(m_alien[i].get_opacite() == 255)
+                    if(m_alien[i].get_opacity() == 255)
                     {
-                        m_explosion.push_back(Explosion(horlogePrincipale.getElapsedTime() - tempsPassePause, m_alien[i].get_position(), m_tailleAlien, m_img_explosion.getSize().y, m_alien[i].get_vitesse()));
+                        m_explosion.push_back(Explosion(horlogePrincipale.getElapsedTime() - tempsPassePause, m_alien[i].get_position(), m_tailleAlien, m_img_explosion.getSize().y, m_alien[i].get_speed()));
                         m_sprite_explosion.push_back(sf::Sprite());
                         m_sprite_explosion.back().setTexture(m_img_explosion);
                         m_sprite_explosion.back().setTextureRect(sf::IntRect(0, 0, 100, 100));
                         m_sprite_explosion.back().setPosition(m_explosion.back().get_position());
                     }
-                    m_alien[i].mourir(horlogePrincipale.getElapsedTime() - tempsPassePause);
-                    m_sprite_alien[i].setColor(sf::Color(255, 255, 255, m_alien[i].get_opacite()));
-                    if(m_alien[i].get_opacite() == 0)
+                    m_alien[i].die(horlogePrincipale.getElapsedTime() - tempsPassePause);
+                    m_sprite_alien[i].setColor(sf::Color(255, 255, 255, m_alien[i].get_opacity()));
+                    if(m_alien[i].get_opacity() == 0)
                     {
                         iteratorAlien = m_alien.begin() + i;
                         m_alien.erase(iteratorAlien);
@@ -365,9 +365,9 @@ void Game::Update(GameEngine* shootTheAliens)
                 }
             }
             //Player
-            if(m_joueur.get_vivant() == false)
+            if(m_joueur.is_alive() == false)
             {
-                if(m_joueur.get_opacite() == 255)
+                if(m_joueur.get_opacity() == 255)
                 {
                     m_explosion.push_back(Explosion(horlogePrincipale.getElapsedTime() - tempsPassePause, m_joueur.get_position(), m_tailleJoueur, m_img_explosion.getSize().y, 0));
                     m_sprite_explosion.push_back(sf::Sprite());
@@ -375,9 +375,9 @@ void Game::Update(GameEngine* shootTheAliens)
                     m_sprite_explosion.back().setTextureRect(sf::IntRect(0, 0, 100, 100));
                     m_sprite_explosion.back().setPosition(m_explosion.back().get_position());
                 }
-                m_joueur.mourir(horlogePrincipale.getElapsedTime() - tempsPassePause);
-                m_sprite_joueur.setColor(sf::Color(255, 255, 255, m_joueur.get_opacite()));
-                if(m_joueur.get_opacite() == 0)
+                m_joueur.die(horlogePrincipale.getElapsedTime() - tempsPassePause);
+                m_sprite_joueur.setColor(sf::Color(255, 255, 255, m_joueur.get_opacity()));
+                if(m_joueur.get_opacity() == 0)
                 {
                     m_scoreFinal = m_score;
                     m_finPartie = true;
@@ -389,12 +389,12 @@ void Game::Update(GameEngine* shootTheAliens)
             {
                 for(unsigned int i = 0 ; i < m_explosion.size() ; i++)
                 {
-                    m_explosion[i].changerEtat(horlogePrincipale.getElapsedTime() - tempsPassePause);
-                    m_sprite_explosion[i].setTextureRect(sf::IntRect(100*m_explosion[i].get_etat(), 0, 100, 100));
-                    m_explosion[i].avancer(horlogePrincipale.getElapsedTime() - tempsPassePause);
+                    m_explosion[i].changeState(horlogePrincipale.getElapsedTime() - tempsPassePause);
+                    m_sprite_explosion[i].setTextureRect(sf::IntRect(100*m_explosion[i].get_state(), 0, 100, 100));
+                    m_explosion[i].moveForward(horlogePrincipale.getElapsedTime() - tempsPassePause);
                     m_sprite_explosion[i].setPosition(m_explosion[i].get_position());
                 }
-                if(m_explosion.front().get_etat() >= 9)
+                if(m_explosion.front().get_state() >= 9)
                 {
                     m_explosion.erase(m_explosion.begin());
                     m_sprite_explosion.erase(m_sprite_explosion.begin());
@@ -402,13 +402,13 @@ void Game::Update(GameEngine* shootTheAliens)
             }
             //Animation des vaisseaux
             m_sprite_joueur.setTextureRect(sf::IntRect(0, 0, m_tailleJoueur.x, m_tailleJoueur.y));
-            m_joueur.changerEtat(horlogePrincipale.getElapsedTime() - tempsPassePause);
-            m_sprite_joueur.setTextureRect(sf::IntRect(m_tailleJoueur.x*m_joueur.get_etat(), 0, m_tailleJoueur.x, m_tailleJoueur.y));
+            m_joueur.changeState(horlogePrincipale.getElapsedTime() - tempsPassePause);
+            m_sprite_joueur.setTextureRect(sf::IntRect(m_tailleJoueur.x*m_joueur.get_state(), 0, m_tailleJoueur.x, m_tailleJoueur.y));
             for(unsigned int i = 0 ; i < m_alien.size() ; i++)
             {
                 m_sprite_alien[i].setTextureRect(sf::IntRect(0, 0, m_tailleAlien.x, m_tailleAlien.y));
-                m_alien[i].changerEtat(horlogePrincipale.getElapsedTime() - tempsPassePause);
-                m_sprite_alien[i].setTextureRect(sf::IntRect(m_tailleAlien.x*m_alien[i].get_etat(), 0, m_tailleAlien.x, m_tailleAlien.y));
+                m_alien[i].changeState(horlogePrincipale.getElapsedTime() - tempsPassePause);
+                m_sprite_alien[i].setTextureRect(sf::IntRect(m_tailleAlien.x*m_alien[i].get_state(), 0, m_tailleAlien.x, m_tailleAlien.y));
             }
         }
     }else{
@@ -426,7 +426,7 @@ void Game::Update(GameEngine* shootTheAliens)
         if(m_finPartie)
         {
             //On coupe le son des strafe
-            SoundManager::getInstance()->jouerStrafe(false, horlogePrincipale.getElapsedTime() - tempsPassePause, true);
+            SoundManager::getInstance()->playStrafeSound(false, horlogePrincipale.getElapsedTime() - tempsPassePause, true);
             //Enregistrement du highscore
             if(m_score > m_highscore)
             {
@@ -463,8 +463,8 @@ void Game::Update(GameEngine* shootTheAliens)
             m_explosion.clear();
             m_sprite_explosion.clear();
             m_finPartie = false;
-            m_joueur.set_vivant(horlogePrincipale.getElapsedTime() - tempsPassePause, true);
-            m_joueur.set_opacite(255);
+            m_joueur.set_alive(horlogePrincipale.getElapsedTime() - tempsPassePause, true);
+            m_joueur.set_opacity(255);
             m_sprite_joueur.setColor(sf::Color(255, 255, 255, 255));
         }
 
@@ -488,7 +488,7 @@ void Game::Update(GameEngine* shootTheAliens)
         m_texteHighscore.setPosition(m_dimensionsJeu.x/2, m_dimensionsJeu.y/3*2);
 
         m_sprite_joueur.setTexture(m_img_joueur);
-        m_joueur.set_joueur(m_dimensionsJeu, sf::Vector2u(m_tailleJoueur.x, m_tailleJoueur.y));
+        m_joueur.set_player(m_dimensionsJeu, sf::Vector2u(m_tailleJoueur.x, m_tailleJoueur.y));
     }
 
     m_vuePrincipale.reset(sf::FloatRect(0, 0, 400, 700));
@@ -507,7 +507,7 @@ void Game::Update(GameEngine* shootTheAliens)
         m_vuePrincipale.setViewport(sf::FloatRect((float)(1-facteurViewport.x)/2, 0, facteurViewport.x, facteurViewport.y));
     }
 
-    SoundManager::getInstance()->nettoyer();
+    SoundManager::getInstance()->cleanupFinishedSounds();
     shootTheAliens->getFenetre()->setView(m_vuePrincipale);
 }
 

@@ -17,7 +17,7 @@ Ship::~Ship()
 {
 }
 
-void Ship::mourir(sf::Time tempsPassePrincipal)
+void Ship::die(sf::Time tempsPassePrincipal)
 {
     if(m_opacite > 0)
     {
@@ -30,11 +30,11 @@ void Ship::mourir(sf::Time tempsPassePrincipal)
     }
     if(m_opacite == 0)
     {
-        SoundManager::getInstance()->jouerReacteur(m_id, true);
+        SoundManager::getInstance()->playEngineSound(m_id, true);
     }
 }
 
-bool Ship::tirer(sf::Time tempsPassePrincipal)
+bool Ship::shoot(sf::Time tempsPassePrincipal)
 {
     m_tirer = false;
     if(tempsPassePrincipal.asSeconds() - m_tempsPasseTirer.asSeconds() > 1 / m_freqDeTir)
@@ -45,7 +45,7 @@ bool Ship::tirer(sf::Time tempsPassePrincipal)
     return m_tirer;
 }
 
-void Ship::changerEtat(sf::Time tempsPassePrincipal)
+void Ship::changeState(sf::Time tempsPassePrincipal)
 {
     if((tempsPassePrincipal.asMilliseconds() - m_tempsPasseEtat.asMilliseconds()) >= 75)
     {
@@ -72,7 +72,7 @@ void Ship::changerEtat(sf::Time tempsPassePrincipal)
     }
 }
 
-sf::Vector2u Ship::get_taille(sf::Vector2u tailleJoueur)
+sf::Vector2u Ship::get_size(sf::Vector2u tailleJoueur)
 {
     sf::Vector2u taille = sf::Vector2u(tailleJoueur.x/nbrEtat, tailleJoueur.y);
     return taille;

@@ -71,7 +71,7 @@ SoundManager::~SoundManager()
     delete[] m_buffer_fx;
 }
 
-void SoundManager::nettoyer()
+void SoundManager::cleanupFinishedSounds()
 {
     for(unsigned int i=0 ; i<m_son.size() ; i++)
     {
@@ -109,7 +109,7 @@ void SoundManager::playPause(bool pause, sf::Sound *son)
     else son->play();
 }
 
-void SoundManager::jouerSon(Sons type)
+void SoundManager::playSound(Sons type)
 {
     switch (type)
     {
@@ -132,15 +132,15 @@ void SoundManager::jouerSon(Sons type)
     }
 }
 
-void SoundManager::jouerStrafe(bool stopper, sf::Time tempsPassePrincipal, bool tuer)
+void SoundManager::playStrafeSound(bool stop, sf::Time tempsPassePrincipal, bool stopImmediately)
 {
-    if(tuer)
+    if(stopImmediately)
     {
         m_son_strafe[0].setVolume(0);
         m_son_strafe[1].setVolume(0);
     }else{
         float multiplicateur = tempsPassePrincipal.asSeconds() - m_tempsPasseAttenuation.asSeconds();
-        if(stopper && m_son_strafe[0].getVolume() > 5)
+        if(stop && m_son_strafe[0].getVolume() > 5)
         {
             m_son_strafe[0].setVolume(m_son_strafe[0].getVolume() - m_volumeStrafe / m_vitesseAttenuationStrafe * multiplicateur);
             m_son_strafe[1].setVolume(m_son_strafe[1].getVolume() - m_volumeStrafe / m_vitesseAttenuationStrafe * multiplicateur);
@@ -150,7 +150,7 @@ void SoundManager::jouerStrafe(bool stopper, sf::Time tempsPassePrincipal, bool 
                 m_son_strafe[1].setVolume(0);
             }
         }
-        else if(!stopper && m_son_strafe[0].getVolume() < m_volumeStrafe)
+        else if(!stop && m_son_strafe[0].getVolume() < m_volumeStrafe)
         {
             m_son_strafe[0].setVolume(m_son_strafe[0].getVolume() + m_volumeStrafe / m_vitesseAttenuationStrafe * multiplicateur);
             m_son_strafe[1].setVolume(m_son_strafe[1].getVolume() + m_volumeStrafe / m_vitesseAttenuationStrafe * multiplicateur);
@@ -159,9 +159,9 @@ void SoundManager::jouerStrafe(bool stopper, sf::Time tempsPassePrincipal, bool 
     }
 }
 
-void SoundManager::jouerReacteur(int proprietaire, bool stopper)
+void SoundManager::playEngineSound(int proprietaire, bool stop)
 {
-    if(stopper)
+    if(stop)
     {
         m_son_reacteur.erase(proprietaire);
     }else{

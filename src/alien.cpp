@@ -46,15 +46,15 @@ Alien::~Alien()
 {
 }
 
-void Alien::avancer(sf::Time tempsPassePrincipal)
+void Alien::moveForward(sf::Time tempsPassePrincipal)
 {
     m_position.y = m_position.y + m_vitesse * (tempsPassePrincipal.asSeconds() - m_tempsPasseMouvement.asSeconds());
     m_tempsPasseMouvement = tempsPassePrincipal;
 }
 
-bool Alien::tirer(sf::Time tempsPassePrincipal)
+bool Alien::shoot(sf::Time tempsPassePrincipal)
 {
-    Ship::tirer(tempsPassePrincipal);
+    Ship::shoot(tempsPassePrincipal);
     if(!(m_arme)) m_tirer = false;
     return m_tirer;
 }

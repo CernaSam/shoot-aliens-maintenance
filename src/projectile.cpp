@@ -8,14 +8,14 @@ Projectile::Projectile(sf::Time tempsPassePrincipal, bool ennemi, int vitesseVai
     m_position.y = position.y + tailleVaisseau.y / 2;
     m_tempsPasseAvancer = tempsPassePrincipal;
 
-    if(!m_ennemi) SoundManager::getInstance()->jouerSon(TIR);
+    if(!m_ennemi) SoundManager::getInstance()->playSound(TIR);
 }
 
 Projectile::~Projectile()
 {
 }
 
-void Projectile::avancer(sf::Time tempsPassePrincipal)
+void Projectile::moveForward(sf::Time tempsPassePrincipal)
 {
     if(m_ennemi)
     {

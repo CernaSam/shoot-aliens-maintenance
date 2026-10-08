@@ -8,14 +8,14 @@ Explosion::Explosion(sf::Time tempsPassePrincipal, sf::Vector2f position, sf::Ve
     m_vitesse = vitesse;
     m_tempsPasseEtat = tempsPassePrincipal;
     m_tempsPasseAvancer = tempsPassePrincipal;
-    SoundManager::getInstance()->jouerSon(EXPLOSION);
+    SoundManager::getInstance()->playSound(EXPLOSION);
 }
 
 Explosion::~Explosion()
 {
 }
 
-void Explosion::changerEtat(sf::Time tempsPassePrincipal)
+void Explosion::changeState(sf::Time tempsPassePrincipal)
 {
     if((tempsPassePrincipal.asMilliseconds() - m_tempsPasseEtat.asMilliseconds()) >= 75)
     {
@@ -24,7 +24,7 @@ void Explosion::changerEtat(sf::Time tempsPassePrincipal)
     }
 }
 
-void Explosion::avancer(sf::Time tempsPassePrincipal)
+void Explosion::moveForward(sf::Time tempsPassePrincipal)
 {
     m_position.y = m_position.y + m_vitesse * (tempsPassePrincipal.asSeconds() - m_tempsPasseAvancer.asSeconds());
     m_tempsPasseAvancer = tempsPassePrincipal;

@@ -12,13 +12,13 @@ class Projectile
         Projectile(sf::Time tempsPassePrincipal, bool ennemi, int vitesse, sf::Vector2f position, sf::Vector2u tailleAlien, sf::Vector2u m_tailleTir);
         virtual ~Projectile();
 
-        void avancer(sf::Time tempsPassePrincipal);
+        void moveForward(sf::Time tempsPassePrincipal);
 
         const sf::Vector2f get_position() const
         {
             return m_position;
         }
-        const bool get_ennemi() const
+        const bool get_enemy() const
         {
             return m_ennemi;
         }

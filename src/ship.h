@@ -11,19 +11,19 @@ class Ship
         Ship();
         virtual ~Ship();
 
-        void mourir(sf::Time tempsPassePrincipal);
-        bool tirer(sf::Time tempsPassePrincipal);
-        void changerEtat(sf::Time tempsPassePrincipal);
-        static sf::Vector2u get_taille(sf::Vector2u tailleJoueur);
+        void die(sf::Time tempsPassePrincipal);
+        bool shoot(sf::Time tempsPassePrincipal);
+        void changeState(sf::Time tempsPassePrincipal);
+        static sf::Vector2u get_size(sf::Vector2u tailleJoueur);
         const sf::Vector2f get_position() const
         {
             return m_position;
         }
-        const bool get_vivant() const
+        const bool is_alive() const
         {
             return m_vivant;
         }
-        const int get_opacite() const
+        const int get_opacity() const
         {
             return m_opacite;
         }
@@ -31,7 +31,7 @@ class Ship
         {
             return nbrEtat;
         }
-        const int get_etat() const
+        const int get_state() const
         {
             return m_etat;
         }
@@ -39,12 +39,12 @@ class Ship
         {
             return m_id;
         }
-        void set_vivant(sf::Time tempsPassePrincipal, bool vivant)
+        void set_alive(sf::Time tempsPassePrincipal, bool vivant)
         {
             m_vivant = vivant;
             m_tempsPasseMourir = tempsPassePrincipal;
         }
-        void set_opacite(int opacite)
+        void set_opacity(int opacite)
         {
             m_opacite = opacite;
         }

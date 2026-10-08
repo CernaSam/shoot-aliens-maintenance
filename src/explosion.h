@@ -15,13 +15,13 @@ class Explosion
         {
             return m_position;
         }
-        const int get_etat() const
+        const int get_state() const
         {
             return m_etat;
         }
 
-        void changerEtat(sf::Time tempsPassePrincipal);
-        void avancer(sf::Time tempsPassePrincipal);
+        void changeState(sf::Time tempsPassePrincipal);
+        void moveForward(sf::Time tempsPassePrincipal);
     private:
         int m_etat;
         sf::Vector2f m_position;

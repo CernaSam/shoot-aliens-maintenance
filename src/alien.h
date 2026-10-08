@@ -10,10 +10,10 @@ class Alien : public Ship
         Alien(sf::Time tempsPassePrincipal, int niveau, float difficulte, sf::Vector2u dimensionJeu, sf::Vector2u tailleVaisseau);
         virtual ~Alien();
 
-        void avancer(sf::Time tempsPassePrincipal);
-        bool tirer(sf::Time tempsPassePrincipal);
+        void moveForward(sf::Time tempsPassePrincipal);
+        bool shoot(sf::Time tempsPassePrincipal);
 
-        const int get_vitesse() const
+        const int get_speed() const
         {
             return m_vitesse;
         }
