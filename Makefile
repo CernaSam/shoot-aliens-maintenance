@@ -14,7 +14,9 @@ run: build
 	cmake --build $(BUILD_DIR) --config $(BUILD_TYPE) --target $(TARGET)
 	./$(BUILD_DIR)/$(TARGET)
 
-test: build
+test:
+	cmake -S . -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE)
+	cmake --build $(BUILD_DIR) --config $(BUILD_TYPE) --target run_tests
 	ctest --test-dir $(BUILD_DIR) --output-on-failure -C $(BUILD_TYPE)
 
 clean:

@@ -36,10 +36,27 @@ target_link_libraries(shoot-the-aliens
 
 enable_testing()
 
-# Resource files are copied next to the executable.
-add_custom_command(
-    TARGET shoot-the-aliens POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${PROJECT_SOURCE_DIR}/ressources"
-        "$<TARGET_FILE_DIR:shoot-the-aliens>/ressources"
+# Standalone Test Target (No external dependencies needed)
+add_executable(run_tests
+    tests/test_main.cpp
+    src/player.cpp
+    src/explosion.cpp
+    src/ship.cpp
+    src/soundmanager.cpp
 )
+
+target_include_directories(run_tests
+    PRIVATE
+        "${PROJECT_SOURCE_DIR}/src"
+)
+
+target_link_libraries(run_tests
+    PRIVATE
+        sfml-audio
+        sfml-graphics
+        sfml-window
+        sfml-system
+)
+
+# Register the executable directly with CTest
+add_test(NAME AllTests COMMAND run_tests)
