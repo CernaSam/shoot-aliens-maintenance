@@ -31,18 +31,38 @@ It's very simple, you play with arrow keys, and the space ship will shoot automa
 >
 > This game is in beta for the moment, so there are perhaps some bugs. If you find one of them, you're welcome to report it.
 
-## How to compile it ?
+## Development workflow
 
-### Windows
+The project uses Make as the main entry point to the build system. CMake is used internally to configure and build the project.
 
-- Download [SFML 2.5.1](https://www.sfml-dev.org/download/sfml/2.5.1/) for `Visual C++ 15 (2017) - 32-bit` and extract it.
-- Run `cmake -S . -B build -DSFML_DIR=PATH_TO_SFML/lib/cmake/SFML`.
-- Run `cmake --build build --config Release`
-- Copy the output from `./build/Release` to current folder (it has to contains the `ressources` folder) and you're ready to go!
+You need:
+- GNU Make
+- CMake
+- A C++ compiler
+- SFML
 
-### Linux
+The main commands are:
 
-- Install `libsfml` and `libsfml-dev`.
-- Run `cmake -S . -B build -DSFML_DIR=/usr/local/lib/cmake/SFML/`
-- Run `cmake --build build --config Release`
-- Copy the output from `./build` to current folder and you're ready to go!
+| Command      | Description                |
+|--------------|----------------------------|
+| `make`       | Build the game             |
+| `make run`   | Build and run the game     |
+| `make test`  | Build and run the tests    |
+| `make clean` | Remove the build directory |
+
+The intention is to keep the development workflow identical on Linux and Windows, with platform-specific compiler and dependency configuration handled by the underlying build system.
+
+## Future maintenance
+
+The project is being maintained primarily as a preservation and modernization effort. The goal is to keep the original gameplay while gradually improving the codebase. Future work includes:
+
+### Preventive Maintenance
+
+- adding more automated tests for gameplay logic
+- modernizing the C++ code
+- improving memory management and replacing unnecessary manual allocations
+- improving error handling when loading resources
+- making resource and user-data paths more robust
+- adding continuous integration for Linux and Windows
+
+The intention is not to rewrite the game from scratch, but to progressively make the original project safer, easier to build and easier to maintain.
