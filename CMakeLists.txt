@@ -41,6 +41,7 @@ add_executable(run_tests
     tests/test_main.cpp
     src/player.cpp
     src/explosion.cpp
+    src/projectile.cpp
     src/ship.cpp
     src/soundmanager.cpp
 )

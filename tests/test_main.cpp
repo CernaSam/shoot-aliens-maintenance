@@ -4,6 +4,7 @@
 #include "player.h"
 #include "explosion.h"
 #include "alien.h"
+#include "projectile.h"
 
 #define RUN_TEST(test_func) \
     std::cout << "Running " << #test_func << "... "; \
@@ -114,6 +115,60 @@ void test_explosion_copy_construction() {
     Explosion orig(sf::seconds(0.5f), sf::Vector2f(10.0f, 10.0f), sf::Vector2u(10, 10), 5, 1);
     Explosion copy = orig;
     assert(true);
+}
+
+// ==========================================
+// Projectile Class Tests
+// ==========================================
+
+void test_projectile_initialization() {
+    Projectile projectile(
+        sf::seconds(1.0f),
+        true,
+        100,
+        sf::Vector2f(100.0f, 200.0f),
+        sf::Vector2u(50, 50),
+        sf::Vector2u(10, 10)
+    );
+
+    sf::Vector2f position = projectile.get_position();
+
+    assert(projectile.get_enemy());
+    assert(position.x == 120.0f);
+    assert(position.y == 225.0f);
+}
+
+void test_enemy_projectile_movement() {
+    Projectile projectile(
+        sf::Time::Zero,
+        true,
+        100,
+        sf::Vector2f(0.0f, 0.0f),
+        sf::Vector2u(20, 20),
+        sf::Vector2u(4, 4)
+    );
+
+    projectile.moveForward(sf::seconds(1.0f));
+
+    // Enemy projectile speed is doubled from 100 to 200 pixels/second.
+    assert(projectile.get_position().y == 210.0f);
+}
+
+void test_player_projectile_movement() {
+    Projectile projectile(
+        sf::Time::Zero,
+        false,
+        0,
+        sf::Vector2f(0.0f, 0.0f),
+        sf::Vector2u(20, 20),
+        sf::Vector2u(4, 4)
+    );
+
+    projectile.moveForward(sf::seconds(1.0f));
+
+    // Player projectiles move upward at 600 pixels/second.
+    assert(!projectile.get_enemy());
+    assert(projectile.get_position().y == -590.0f);
 }
 
 // ==========================================
@@ -232,6 +287,10 @@ int main() {
     RUN_TEST(test_explosion_zero_speed);
     RUN_TEST(test_explosion_large_size);
     RUN_TEST(test_explosion_copy_construction);
+
+    RUN_TEST(test_projectile_initialization);
+    RUN_TEST(test_enemy_projectile_movement);
+    RUN_TEST(test_player_projectile_movement);
 
     std::cout << "All tests passed successfully!\n";
     return 0;
