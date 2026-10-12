@@ -273,17 +273,17 @@ void Game::Update(GameEngine* shootTheAliens)
                 m_projectileSprite[i].setPosition(m_tir[i].get_position());
             }
             //Destruction des tirs sortis de l'�cran
-            if(m_tir.size() > 1)
+            for(unsigned int i = 0 ; i < m_tir.size() ; )
             {
-                sf::Vector2f posTir = m_tir.front().get_position();
-                while(posTir.y > m_gameDimensions.y || posTir.y < -100)
+                sf::Vector2f posTir = m_tir[i].get_position();
+                if(posTir.y > m_gameDimensions.y || posTir.y < -100)
                 {
-                    m_tir.erase(m_tir.begin());
-                    m_projectileSprite.erase(m_projectileSprite.begin());
-                    if(m_tir.size() > 0)
-                    {
-                        posTir = m_tir.front().get_position();
-                    }
+                    m_tir.erase(m_tir.begin() + i);
+                    m_projectileSprite.erase(m_projectileSprite.begin() + i);
+                }
+                else
+                {
+                    i++;
                 }
             }
 
