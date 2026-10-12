@@ -199,11 +199,11 @@ void Game::Update(GameEngine* shootTheAliens)
         }else{
             m_fond->update(mainClock.getElapsedTime() - pausedDuration);
             SoundManager::getInstance()->fx(mainClock.getElapsedTime() - pausedDuration);
-            //Niveaux
+            //level
             elapsedTime = mainClock.getElapsedTime() - pausedDuration;
-            if(elapsedTime.asSeconds() - tempsPasseNiveau.asSeconds() > 5 / m_difficulty)
+            if(elapsedTime.asSeconds() - elapsedLevelTime.asSeconds() > 5 / m_difficulty)
             {
-                tempsPasseNiveau = elapsedTime;
+                elapsedLevelTime = elapsedTime;
                 m_level++;
             }
 
@@ -454,7 +454,7 @@ void Game::Update(GameEngine* shootTheAliens)
             m_previousLevelDeaths = 0;
             m_deaths = 0;
             m_aliensTotal = 0;
-            tempsPasseNiveau = mainClock.getElapsedTime() - pausedDuration;
+            elapsedLevelTime = mainClock.getElapsedTime() - pausedDuration;
             tempsPassePop = mainClock.getElapsedTime() - pausedDuration;
             m_alien.clear();
             m_alienSprite.clear();

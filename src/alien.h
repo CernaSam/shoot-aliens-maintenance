@@ -7,7 +7,7 @@
 class Alien : public Ship
 {
     public:
-        Alien(sf::Time elapsedTime, int niveau, float difficulte, sf::Vector2u gameDimensions, sf::Vector2u shipSize);
+        Alien(sf::Time elapsedTime, int level, float difficulty, sf::Vector2u gameDimensions, sf::Vector2u shipSize);
         virtual ~Alien();
 
         void moveForward(sf::Time elapsedTime);
@@ -17,8 +17,20 @@ class Alien : public Ship
         {
             return m_speed;
         }
+        const bool get_armed() const
+        {
+            return m_armed;
+        }
+        const float get_shootingFrequency() const
+        {
+            return m_shootingFrequency;
+        }
+        const sf::Time get_lastMovementTime() const
+        {
+            return m_lastMovementTime;
+        }
     private:
-        bool m_arme;
+        bool m_armed;
         sf::Vector2u m_projectileSize;
 };
 

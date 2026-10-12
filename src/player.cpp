@@ -8,7 +8,7 @@ enum Directions
 
 Player::Player()
 {
-    m_freqDeTir = 4;
+    m_shootingFrequency = 4;
 }
 
 Player::~Player()

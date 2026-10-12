@@ -17,13 +17,13 @@ class Explosion
         }
         const int get_state() const
         {
-            return m_etat;
+            return m_state;
         }
 
         void changeState(sf::Time elapsedTime);
         void moveForward(sf::Time elapsedTime);
     private:
-        int m_etat;
+        int m_state;
         sf::Vector2f m_position;
         int m_speed;
 

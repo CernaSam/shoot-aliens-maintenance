@@ -4,41 +4,41 @@
 #include <stdio.h>
 #include <vector>
 
-Alien::Alien(sf::Time elapsedTime, int niveau, float difficulte, sf::Vector2u gameDimensions, sf::Vector2u shipSize)
+Alien::Alien(sf::Time elapsedTime, int level, float difficulty, sf::Vector2u gameDimensions, sf::Vector2u shipSize)
 {
-    m_speed = 500 * difficulte + niveau * 20;
-    if(niveau == 1)
+    m_speed = 500 * difficulty + level * 20;
+    if(level == 1)
     {
         if(rand() % 100 + 1 < 30)
         {
-            m_arme = true;
+            m_armed = true;
         }else{
-            m_arme = false;
+            m_armed = false;
         }
     }
-    else if(niveau <= 2)
+    else if(level <= 2)
     {
         if(rand() % 100 + 1 < 60)
         {
-            m_arme = true;
+            m_armed = true;
         }else{
-            m_arme = false;
+            m_armed = false;
         }
     }
-    else if(niveau <= 4)
+    else if(level <= 4)
     {
         if(rand() % 100 + 1 < 90)
         {
-            m_arme = true;
+            m_armed = true;
         }else{
-            m_arme = false;
+            m_armed = false;
         }
     }else{
-        m_arme = true;
+        m_armed = true;
     }
     m_position.x = rand() % (gameDimensions.x + 1 - shipSize.x);
     m_position.y = -100;
-    m_freqDeTir = 1 + difficulte + niveau / 5;
+    m_shootingFrequency = 1 + difficulty + level / 5;
     m_lastMovementTime = elapsedTime;
 }
 
@@ -55,6 +55,6 @@ void Alien::moveForward(sf::Time elapsedTime)
 bool Alien::shoot(sf::Time elapsedTime)
 {
     Ship::shoot(elapsedTime);
-    if(!(m_arme)) m_tirer = false;
-    return m_tirer;
+    if(!(m_armed)) m_shooting = false;
+    return m_shooting;
 }

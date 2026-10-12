@@ -3,6 +3,7 @@
 #include <SFML/System.hpp>
 #include "player.h"
 #include "explosion.h"
+#include "alien.h"
 
 #define RUN_TEST(test_func) \
     std::cout << "Running " << #test_func << "... "; \
@@ -114,6 +115,104 @@ void test_explosion_copy_construction() {
     Explosion copy = orig;
     assert(true);
 }
+
+// ==========================================
+// Alien Class Tests
+// ==========================================
+
+Alien create_testAlien()
+{
+    sf::Time time = sf::seconds(1.0f);
+    sf::Vector2u gameDim(800, 600);
+    sf::Vector2u shipSize(50, 50);
+
+    Alien testAlien(
+        time,
+        5,
+        1.0f,
+        gameDim,
+        shipSize
+    );
+
+    return testAlien;
+}
+
+void test_alien_constructor()
+{
+    Alien testAlien = create_testAlien();
+
+    auto position = testAlien.get_position();
+
+    assert(testAlien.is_alive());
+    assert(testAlien.get_opacity() == 255);
+    assert(testAlien.get_state() == 0);
+    assert(testAlien.get_speed() == 600);
+    assert(testAlien.get_armed());
+    assert(testAlien.get_id() >= 0);
+
+    assert(position.x >= 0);
+    assert(position.x <= 750);
+    assert(position.y == -100);
+
+    assert(testAlien.get_shootingFrequency() == 3.0f);
+    assert(testAlien.get_lastMovementTime().asSeconds() == 1.0f);
+}
+
+void test_moveForward()
+{
+    Alien testAlien = create_testAlien();
+
+    testAlien.moveForward(sf::seconds(2.0f));
+
+    auto position = testAlien.get_position();
+
+    assert(position.y == 500);
+    assert(testAlien.get_lastMovementTime().asSeconds() == 2.0f);
+}
+
+void test_shoot()
+{
+    Alien testAlien = create_testAlien();
+
+    bool firstShot = testAlien.shoot(sf::seconds(2.0f));
+    bool secondShot = testAlien.shoot(sf::seconds(2.1f));
+
+    assert(firstShot);
+    assert(!secondShot);
+}
+
+void test_die()
+{
+    Alien testAlien = create_testAlien();
+
+    testAlien.set_alive(sf::seconds(1.0f), false);
+    testAlien.die(sf::seconds(1.5f));
+
+    assert(!testAlien.is_alive());
+    assert(testAlien.get_opacity() == 0);
+}
+
+void test_get_size()
+{
+    sf::Vector2u playerSize(400, 100);
+
+    sf::Vector2u size = Ship::get_size(playerSize);
+
+    assert(size.x == 100);
+    assert(size.y == 100);
+}
+
+void test_get_position()
+{
+    Alien testAlien = create_testAlien();
+
+    sf::Vector2f position = testAlien.get_position();
+
+    assert(position.x >= 0);
+    assert(position.x <= 750);
+    assert(position.y == -100);
+}
+
 
 // ==========================================
 // Test Main Runner

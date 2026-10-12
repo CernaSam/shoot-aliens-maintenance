@@ -63,7 +63,7 @@ private:
     sf::Time elapsedTime;
     sf::Time pausedDuration;
     sf::Time m_pauseStartTime;
-    sf::Time tempsPasseNiveau;
+    sf::Time elapsedLevelTime;
     sf::Time tempsPassePop;
 
     std::vector<Alien> m_alien;
