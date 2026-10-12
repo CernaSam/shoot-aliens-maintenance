@@ -1,13 +1,13 @@
-#include "fond.h"
+#include "background.h"
 
-Fond::Fond(sf::Vector2u dimensionsJeu)
+Background::Background(sf::Vector2u dimensionsJeu)
 {
     m_gameDimensions = dimensionsJeu;
     m_backgroudTexture = new sf::Texture[3];
     m_backgroundSprite = new sf::Sprite[3];
-    m_backgroudTexture[0].loadFromFile("ressources/images/fond1.png");
-    m_backgroudTexture[1].loadFromFile("ressources/images/fond2.png");
-    m_backgroudTexture[2].loadFromFile("ressources/images/fond3.png");
+    m_backgroudTexture[0].loadFromFile("ressources/images/background1.png");
+    m_backgroudTexture[1].loadFromFile("ressources/images/background2.png");
+    m_backgroudTexture[2].loadFromFile("ressources/images/background3.png");
 
     m_backgroudTexture[0].setRepeated(true);
     m_backgroudTexture[1].setRepeated(true);
@@ -25,13 +25,13 @@ Fond::Fond(sf::Vector2u dimensionsJeu)
     m_backgroundSprite[2].setPosition(0, (int)-m_backgroudTexture[2].getSize().y);
 }
 
-Fond::~Fond()
+Background::~Background()
 {
     delete m_backgroudTexture;
     delete m_backgroundSprite;
 }
 
-void Fond::update(sf::Time elapsedTime)
+void Background::update(sf::Time elapsedTime)
 {
     m_backgroundSprite[0].move(0, 30 * (elapsedTime.asSeconds() - m_backgroundElapsedTime.asSeconds()));
     m_backgroundSprite[1].move(0, 70 * (elapsedTime.asSeconds() - m_backgroundElapsedTime.asSeconds()));
@@ -48,17 +48,17 @@ void Fond::update(sf::Time elapsedTime)
     m_backgroundElapsedTime = elapsedTime;
 }
 
-void Fond::draw(GameEngine* shootTheAliens)
+void Background::draw(GameEngine* shootTheAliens)
 {
-    sf::RenderTexture m_fond;
-    m_fond.create(m_gameDimensions.x, m_gameDimensions.y);
+    sf::RenderTexture m_background;
+    m_background.create(m_gameDimensions.x, m_gameDimensions.y);
 
-    m_fond.draw(m_backgroundSprite[0]);
-    m_fond.draw(m_backgroundSprite[1]);
-    m_fond.draw(m_backgroundSprite[2]);
-    m_fond.display();
+    m_background.draw(m_backgroundSprite[0]);
+    m_background.draw(m_backgroundSprite[1]);
+    m_background.draw(m_backgroundSprite[2]);
+    m_background.display();
 
     sf::Sprite img;
-    img.setTexture(m_fond.getTexture());
+    img.setTexture(m_background.getTexture());
     shootTheAliens->getFenetre()->draw(img);
 }

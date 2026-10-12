@@ -291,6 +291,12 @@ int main() {
     RUN_TEST(test_projectile_initialization);
     RUN_TEST(test_enemy_projectile_movement);
     RUN_TEST(test_player_projectile_movement);
+    RUN_TEST(test_alien_constructor);
+    RUN_TEST(test_moveForward);
+    RUN_TEST(test_shoot);
+    RUN_TEST(test_die);
+    RUN_TEST(test_get_size);
+    RUN_TEST(test_get_position);
 
     std::cout << "All tests passed successfully!\n";
     return 0;

@@ -29,7 +29,7 @@ void Game::Init()
     m_gameDimensions.x = 400;
     m_gameDimensions.y = 700;
 
-    m_fond = new Fond(m_gameDimensions);
+    m_background = new Background(m_gameDimensions);
 
     m_isPLaying = false;
     m_isPaused = false;
@@ -84,7 +84,7 @@ void Game::Init()
 
 void Game::Cleanup()
 {
-    delete m_fond;
+    delete m_background;
 }
 
 void Game::Pause()
@@ -197,7 +197,7 @@ void Game::Update(GameEngine* shootTheAliens)
             m_pauseBackground.setFillColor(sf::Color(0,15,31,127));
             SoundManager::getInstance()->playStrafeSound(false, mainClock.getElapsedTime() - pausedDuration, true);
         }else{
-            m_fond->update(mainClock.getElapsedTime() - pausedDuration);
+            m_background->update(mainClock.getElapsedTime() - pausedDuration);
             SoundManager::getInstance()->fx(mainClock.getElapsedTime() - pausedDuration);
             //level
             elapsedTime = mainClock.getElapsedTime() - pausedDuration;
@@ -419,7 +419,7 @@ void Game::Update(GameEngine* shootTheAliens)
             }
         }
     }else{
-        m_fond->update(mainClock.getElapsedTime() - pausedDuration);
+        m_background->update(mainClock.getElapsedTime() - pausedDuration);
         m_start.setPosition(m_gameDimensions.x/2, m_gameDimensions.y/3);
 
         //Ouverture des highscores
@@ -522,7 +522,7 @@ void Game::Draw(GameEngine* shootTheAliens)
 {
     shootTheAliens->getFenetre()->clear(sf::Color::Black);
 
-    m_fond->draw(shootTheAliens);
+    m_background->draw(shootTheAliens);
 
     if(m_isPLaying)
     {

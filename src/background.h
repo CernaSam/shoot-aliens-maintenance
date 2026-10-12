@@ -1,14 +1,14 @@
-#ifndef FOND_H
-#define FOND_H
+#ifndef BACKGROUND_H
+#define BACKGROUND_H
 #include <SFML/Graphics.hpp>
 #include "gamestate.h"
 
 
-class Fond
+class Background
 {
     public:
-        Fond(sf::Vector2u dimensionsJeu);
-        virtual ~Fond();
+        Background(sf::Vector2u dimensionsJeu);
+        virtual ~Background();
 
         void update(sf::Time elapsedTime);
         void draw(GameEngine* shootTheAliens);
@@ -21,4 +21,4 @@ class Fond
         sf::Time m_backgroundElapsedTime;
 };
 
-#endif // FOND_H
+#endif // BACKGROUND_H

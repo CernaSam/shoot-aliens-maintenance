@@ -14,7 +14,7 @@
 #include "alien.h"
 #include "projectile.h"
 #include "explosion.h"
-#include "fond.h"
+#include "background.h"
 #include "soundmanager.h"
 
 
@@ -86,7 +86,7 @@ private:
     sf::Vector2u m_playerSize;
     int m_playerMovementDirection;
 
-    Fond *m_fond = NULL;
+    Background *m_background = NULL;
     sf::RectangleShape m_pauseBackground;
 
     ostringstream screenshotFilename;
