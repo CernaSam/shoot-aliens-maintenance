@@ -394,10 +394,17 @@ void Game::Update(GameEngine* shootTheAliens)
                     m_explosion[i].moveForward(mainClock.getElapsedTime() - pausedDuration);
                     m_explosionsSprite[i].setPosition(m_explosion[i].get_position());
                 }
-                if(m_explosion.front().get_state() >= 9)
+                for(unsigned int i = 0 ; i < m_explosion.size() ; )
                 {
-                    m_explosion.erase(m_explosion.begin());
-                    m_explosionsSprite.erase(m_explosionsSprite.begin());
+                    if(m_explosion[i].get_state() >= 9)
+                    {
+                        m_explosion.erase(m_explosion.begin() + i);
+                        m_explosionsSprite.erase(m_explosionsSprite.begin() + i);
+                    }
+                    else
+                    {
+                        i++;
+                    }
                 }
             }
             //Animation des vaisseaux
