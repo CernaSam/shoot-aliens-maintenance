@@ -42,7 +42,7 @@ void Game::Init()
     m_highscore = 0;
     m_gameOver = false;
 
-    m_fonts.loadFromFile("ressources/bnmachine.ttf");
+    if(!m_fonts.loadFromFile("ressources/bnmachine.ttf")){throw std::runtime_error("Failed to load font!");}
     m_start.setFont(m_fonts);
     m_start.setString("I Wanna Kill Aliens !");
     m_start.setCharacterSize(32);
@@ -72,10 +72,10 @@ void Game::Init()
     m_textePause.setCharacterSize(50);
     m_textePause.setFillColor(sf::Color::White);
 
-    m_playerTexture.loadFromFile("ressources/images/joueur.png");
-    m_alienTexture.loadFromFile("ressources/images/alien.png");
-    m_projectileTexture.loadFromFile("ressources/images/tir.png");
-    m_explosionTexture.loadFromFile("ressources/images/explosion.png");
+    if(!m_playerTexture.loadFromFile("ressources/images/joueur.png")){throw std::runtime_error("Failed to load player texture!");}
+    if(!m_alienTexture.loadFromFile("ressources/images/alien.png")){throw std::runtime_error("Failed to load alien texture!");}
+    if(!m_projectileTexture.loadFromFile("ressources/images/tir.png")){throw std::runtime_error("Failed to load projectile texture!");}
+    if(!m_explosionTexture.loadFromFile("ressources/images/explosion.png")){throw std::runtime_error("Failed to load explosion texture!");}
 
     m_projectileSize = m_projectileTexture.getSize();
     m_playerSize = Ship::get_size(m_playerTexture.getSize());

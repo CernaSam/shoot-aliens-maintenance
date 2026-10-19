@@ -3,9 +3,9 @@
 Background::Background(sf::Vector2u dimensionsJeu)
 {
     m_gameDimensions = dimensionsJeu;
-    m_backgroundTexture[0].loadFromFile("ressources/images/background1.png");
-    m_backgroundTexture[1].loadFromFile("ressources/images/background2.png");
-    m_backgroundTexture[2].loadFromFile("ressources/images/background3.png");
+    if (!m_backgroundTexture[0].loadFromFile("ressources/images/background1.png")){throw std::runtime_error("Failed to load background texture!");}
+    if (!m_backgroundTexture[1].loadFromFile("ressources/images/background2.png")){throw std::runtime_error("Failed to load background texture!");}
+    if (!m_backgroundTexture[2].loadFromFile("ressources/images/background3.png")){throw std::runtime_error("Failed to load background texture!");}
 
     m_backgroundTexture[0].setRepeated(true);
     m_backgroundTexture[1].setRepeated(true);

@@ -15,7 +15,7 @@ int main()
     shootTheAliens.getFenetre()->setVerticalSyncEnabled(true);
 	shootTheAliens.ChangeState(&jeu);
     sf::Image icon;
-    icon.loadFromFile("ressources/images/64x64.png");
+    if(!icon.loadFromFile("ressources/images/64x64.png")){throw std::runtime_error("Failed to load icon!");}
     shootTheAliens.getFenetre()->setIcon(64,64,icon.getPixelsPtr());
 
 	//Boucle principale

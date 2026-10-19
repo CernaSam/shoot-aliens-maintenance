@@ -18,23 +18,23 @@ SoundManager::SoundManager()
     m_volumeReacteur  = 35 * m_volumeBruitages;
     m_volumeStrafe    = 25 * m_volumeBruitages;
 
-    m_buffer_tir[0].loadFromFile("ressources/sons/tir1.wav");
-    m_buffer_tir[1].loadFromFile("ressources/sons/tir2.wav");
-    m_buffer_tir[2].loadFromFile("ressources/sons/tir3.wav");
-    m_buffer_explosion[0].loadFromFile("ressources/sons/explosion1.wav");
-    m_buffer_explosion[1].loadFromFile("ressources/sons/explosion2.wav");
-    m_buffer_explosion[2].loadFromFile("ressources/sons/explosion3.wav");
-    m_buffer_explosion[3].loadFromFile("ressources/sons/explosion4.wav");
-    m_buffer_reacteur[0].loadFromFile("ressources/sons/reacteur_principal1.wav");
-    m_buffer_reacteur[1].loadFromFile("ressources/sons/reacteur_principal2.wav");
-    m_buffer_reacteur[2].loadFromFile("ressources/sons/reacteur_principal3.wav");
-    m_buffer_reacteur[3].loadFromFile("ressources/sons/reacteur_principal4.wav");
-    m_buffer_strafe[0].loadFromFile("ressources/sons/reacteur_secondaire1.wav");
-    m_buffer_strafe[1].loadFromFile("ressources/sons/reacteur_secondaire2.wav");
-    m_buffer_fx[0].loadFromFile("ressources/sons/fx1.wav");
-    m_buffer_fx[1].loadFromFile("ressources/sons/fx2.wav");
-    m_buffer_fx[2].loadFromFile("ressources/sons/fx3.wav");
-    m_buffer_fx[3].loadFromFile("ressources/sons/fx4.wav");
+    if(!m_buffer_tir[0].loadFromFile("ressources/sons/tir1.wav")){throw std::runtime_error("Failed to load tir sound!");}
+    if(!m_buffer_tir[1].loadFromFile("ressources/sons/tir2.wav")){throw std::runtime_error("Failed to load tir sound!");}
+    if(!m_buffer_tir[2].loadFromFile("ressources/sons/tir3.wav")){throw std::runtime_error("Failed to load tir sound!");}
+    if(!m_buffer_explosion[0].loadFromFile("ressources/sons/explosion1.wav")){throw std::runtime_error("Failed to load explosion sound!");}
+    if(!m_buffer_explosion[1].loadFromFile("ressources/sons/explosion2.wav")){throw std::runtime_error("Failed to load explosion sound!");}
+    if(!m_buffer_explosion[2].loadFromFile("ressources/sons/explosion3.wav")){throw std::runtime_error("Failed to load explosion sound!");}
+    if(!m_buffer_explosion[3].loadFromFile("ressources/sons/explosion4.wav")){throw std::runtime_error("Failed to load explosion sound!");}
+    if(!m_buffer_reacteur[0].loadFromFile("ressources/sons/reacteur_principal1.wav")){throw std::runtime_error("Failed to load reacteur sound!");}
+    if(!m_buffer_reacteur[1].loadFromFile("ressources/sons/reacteur_principal2.wav")){throw std::runtime_error("Failed to load reacteur sound!");}
+    if(!m_buffer_reacteur[2].loadFromFile("ressources/sons/reacteur_principal3.wav")){throw std::runtime_error("Failed to load reacteur sound!");}
+    if(!m_buffer_reacteur[3].loadFromFile("ressources/sons/reacteur_principal4.wav")){throw std::runtime_error("Failed to load reacteur sound!");}
+    if(!m_buffer_strafe[0].loadFromFile("ressources/sons/reacteur_secondaire1.wav")){throw std::runtime_error("Failed to load strafe sound!");}
+    if(!m_buffer_strafe[1].loadFromFile("ressources/sons/reacteur_secondaire2.wav")){throw std::runtime_error("Failed to load strafe sound!");}
+    if(!m_buffer_fx[0].loadFromFile("ressources/sons/fx1.wav")){throw std::runtime_error("Failed to load fx sound!");}
+    if(!m_buffer_fx[1].loadFromFile("ressources/sons/fx2.wav")){throw std::runtime_error("Failed to load fx sound!");}
+    if(!m_buffer_fx[2].loadFromFile("ressources/sons/fx3.wav")){throw std::runtime_error("Failed to load fx sound!");}
+    if(!m_buffer_fx[3].loadFromFile("ressources/sons/fx4.wav")){throw std::runtime_error("Failed to load fx sound!");}
 
     for(int i=0 ; i<m_nbrSonsStrafe ; i++)
     {
