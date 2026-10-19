@@ -11,10 +11,6 @@ Player::Player()
     m_shootingFrequency = 4;
 }
 
-Player::~Player()
-{
-}
-
 void Player::set_player(sf::Vector2u gameDimensions, sf::Vector2u shipSize)
 {
     m_position.x = gameDimensions.x / 2 - shipSize.x / 2;

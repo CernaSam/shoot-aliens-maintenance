@@ -9,7 +9,6 @@ class Explosion
 {
     public:
         Explosion(sf::Time elapsedTime, sf::Vector2f position, sf::Vector2u shipSize, unsigned int explosionSize, int speed);
-        virtual ~Explosion();
 
         const sf::Vector2f get_position() const
         {

@@ -9,7 +9,6 @@ class Ship
 {
     public:
         Ship();
-        virtual ~Ship();
 
         void die(sf::Time elapsedTime);
         bool shoot(sf::Time elapsedTime);

@@ -44,8 +44,8 @@ class SoundManager
         sf::Music m_musique;
         std::deque<sf::Sound> m_son;
         std::map<int, std::deque<sf::Sound> > m_son_reacteur;
-        sf::Sound *m_son_strafe = NULL;
-        sf::Sound *m_son_fx = NULL;
+        std::array<sf::Sound, 2> m_son_strafe;
+        std::array<sf::Sound, 4> m_son_fx;
 
         int const m_nbrSonsTir = 3;
         std::array<sf::SoundBuffer, 3> m_buffer_tir;

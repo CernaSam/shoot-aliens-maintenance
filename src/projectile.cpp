@@ -1,18 +1,13 @@
 #include "projectile.h"
 
-Projectile::Projectile(sf::Time elapsedTime, bool isEnemy, int vitesseVaisseau, sf::Vector2f position, sf::Vector2u shipSize, sf::Vector2u m_projectileSize)
+Projectile::Projectile(sf::Time elapsedTime, bool isEnemy, int vitesseVaisseau, sf::Vector2f position, sf::Vector2u shipSize, sf::Vector2u m_projectileSize) :
+    m_ennemi(isEnemy),
+    m_speed(vitesseVaisseau),
+    m_lastMovementTime(elapsedTime)
 {
-    m_ennemi = isEnemy;
-    m_speed = vitesseVaisseau * 2;
     m_position.x = position.x + shipSize.x / 2 - m_projectileSize.x / 2;
     m_position.y = position.y + shipSize.y / 2;
-    m_lastMovementTime = elapsedTime;
-
     if(!m_ennemi) SoundManager::getInstance()->playSound(TIR);
-}
-
-Projectile::~Projectile()
-{
 }
 
 void Projectile::moveForward(sf::Time elapsedTime)

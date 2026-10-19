@@ -10,7 +10,6 @@ class Projectile
 {
     public:
         Projectile(sf::Time elapsedTime, bool isEnemy, int speed, sf::Vector2f position, sf::Vector2u alienSize, sf::Vector2u m_projectileSize);
-        virtual ~Projectile();
 
         void moveForward(sf::Time elapsedTime);
 

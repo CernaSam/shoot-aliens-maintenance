@@ -18,9 +18,6 @@ public:
 	void ChangeState(GameEngine* editeur, GameState* state) {
 		editeur->ChangeState(state);
 	}
-
-protected:
-	GameState() { }
 };
 
 #endif

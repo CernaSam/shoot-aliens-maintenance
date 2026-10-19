@@ -7,6 +7,9 @@
 Alien::Alien(sf::Time elapsedTime, int level, float difficulty, sf::Vector2u gameDimensions, sf::Vector2u shipSize)
 {
     m_speed = 500 * difficulty + level * 20;
+    m_shootingFrequency = 1 + difficulty + level / 5;
+    m_lastMovementTime = elapsedTime;
+    
     if(level == 1)
     {
         if(rand() % 100 + 1 < 30)
@@ -38,12 +41,6 @@ Alien::Alien(sf::Time elapsedTime, int level, float difficulty, sf::Vector2u gam
     }
     m_position.x = rand() % (gameDimensions.x + 1 - shipSize.x);
     m_position.y = -100;
-    m_shootingFrequency = 1 + difficulty + level / 5;
-    m_lastMovementTime = elapsedTime;
-}
-
-Alien::~Alien()
-{
 }
 
 void Alien::moveForward(sf::Time elapsedTime)

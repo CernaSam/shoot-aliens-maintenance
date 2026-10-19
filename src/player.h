@@ -9,7 +9,6 @@ class Player : public Ship
 {
     public:
         Player();
-        virtual ~Player();
 
         void move(sf::Time elapsedTime, int direction);
 

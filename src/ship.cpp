@@ -3,18 +3,9 @@
 int Ship::numberOfStates = 4;
 int Ship::numberOfShips = 0;
 
-Ship::Ship()
+Ship::Ship() : m_alive(true), m_opacity(255), m_state(0), m_speed(0)
 {
-    m_alive = true;
-    m_opacity = 255;
-    m_state = 0;
-    m_speed = 0;
-    m_id = Ship::numberOfShips;
     Ship::numberOfShips++;
-}
-
-Ship::~Ship()
-{
 }
 
 void Ship::die(sf::Time elapsedTime)

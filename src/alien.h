@@ -8,7 +8,6 @@ class Alien : public Ship
 {
     public:
         Alien(sf::Time elapsedTime, int level, float difficulty, sf::Vector2u gameDimensions, sf::Vector2u shipSize);
-        virtual ~Alien();
 
         void moveForward(sf::Time elapsedTime);
         bool shoot(sf::Time elapsedTime);
