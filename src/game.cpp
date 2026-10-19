@@ -9,8 +9,8 @@ struct AABB
 {
   float x;
   float y;
-  int largeur;
-  int hauteur;
+  unsigned int largeur;
+  unsigned int hauteur;
 };
 
 bool Collision(AABB objet1, AABB objet2)
@@ -46,31 +46,31 @@ void Game::Init()
     m_start.setFont(m_fonts);
     m_start.setString("I Wanna Kill Aliens !");
     m_start.setCharacterSize(32);
-    m_start.setColor(sf::Color::Red);
+    m_start.setFillColor(sf::Color::Red);
     m_fontsm_bounds = m_start.getLocalBounds();
     m_start.setOrigin(m_fontsm_bounds.width/2, m_fontsm_bounds.height/2);
 
     m_version.setFont(m_fonts);
     m_version.setString("1.0.0 Legacy");
     m_version.setCharacterSize(13);
-    m_version.setColor(sf::Color(255, 255, 255, 100));
+    m_version.setFillColor(sf::Color(255, 255, 255, 100));
 
     m_texteScore.setFont(m_fonts);
     m_texteScore.setCharacterSize(42);
-    m_texteScore.setColor(sf::Color::White);
+    m_texteScore.setFillColor(sf::Color::White);
 
     m_texteScorePrecedent.setFont(m_fonts);
     m_texteScorePrecedent.setCharacterSize(32);
-    m_texteScorePrecedent.setColor(sf::Color::White);
+    m_texteScorePrecedent.setFillColor(sf::Color::White);
 
     m_texteHighscore.setFont(m_fonts);
     m_texteHighscore.setCharacterSize(32);
-    m_texteHighscore.setColor(sf::Color::Yellow);
+    m_texteHighscore.setFillColor(sf::Color::Yellow);
 
     m_textePause.setFont(m_fonts);
     m_textePause.setString("Pause");
     m_textePause.setCharacterSize(50);
-    m_textePause.setColor(sf::Color::White);
+    m_textePause.setFillColor(sf::Color::White);
 
     m_playerTexture.loadFromFile("ressources/images/joueur.png");
     m_alienTexture.loadFromFile("ressources/images/alien.png");
@@ -147,7 +147,13 @@ void Game::HandleEvents(GameEngine* shootTheAliens)
                 timer = time(NULL);
                 randomValue = rand()%(90)+10;
                 screenshotFilename << "screens/" << timer << "_" << randomValue << ".png";
-                shootTheAliens->getFenetre()->capture().saveToFile(screenshotFilename.str());
+                sf::Texture screenshot;
+                screenshot.create(
+                    shootTheAliens->getFenetre()->getSize().x,
+                    shootTheAliens->getFenetre()->getSize().y
+                );
+                screenshot.update(*shootTheAliens->getFenetre());
+                screenshot.copyToImage().saveToFile(screenshotFilename.str());
                 screenshotFilename.str("");
                 if(m_isPaused)
                 {

@@ -3,11 +3,12 @@
 BUILD_DIR := build
 BUILD_TYPE := Release
 TARGET := shoot-the-aliens
+FLAGS := -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wshadow -Wnull-dereference -Wold-style-cast -Woverloaded-virtual
 
 all: build
 
 build:
-	cmake -S . -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE)
+	cmake -S . -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) DCMAKE_CXX_FLAGS="$(FLAGS)"
 	cmake --build $(BUILD_DIR) --config $(BUILD_TYPE)
 
 run: build
