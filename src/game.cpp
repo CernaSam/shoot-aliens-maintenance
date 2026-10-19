@@ -29,7 +29,7 @@ void Game::Init()
     m_gameDimensions.x = 400;
     m_gameDimensions.y = 700;
 
-    m_background = new Background(m_gameDimensions);
+    m_background = std::make_unique<Background>(m_gameDimensions);
 
     m_isPLaying = false;
     m_isPaused = false;
@@ -80,11 +80,6 @@ void Game::Init()
     m_projectileSize = m_projectileTexture.getSize();
     m_playerSize = Ship::get_size(m_playerTexture.getSize());
     m_alienSize = Ship::get_size(m_alienTexture.getSize());
-}
-
-void Game::Cleanup()
-{
-    delete m_background;
 }
 
 void Game::Pause()

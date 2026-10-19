@@ -2,6 +2,7 @@
 #define GAMEENGINE_H
 
 #include <vector>
+#include <memory>
 #include <SFML/Graphics.hpp>
 
 using namespace std;
@@ -13,7 +14,6 @@ class GameEngine
 public:
 
 	void Init(const char* titre, int largeur, int hauteur);
-	void Cleanup();
 
 	void ChangeState(GameState* state);
 	void PushState(GameState* state);
@@ -26,7 +26,7 @@ public:
 	bool Running() {return m_running;}
 	void Quit() {m_running = false;}
 
-	sf::RenderWindow* getFenetre() {return m_fenetre;}
+	std::shared_ptr<sf::RenderWindow> getFenetre() { return m_fenetre; }
 
 private:
 	//La pile d'�tats
@@ -34,7 +34,7 @@ private:
 
 	bool m_running = true;
 	bool m_fullscreen;
-	sf::RenderWindow* m_fenetre;
+	std::shared_ptr<sf::RenderWindow> m_fenetre;
 };
 
 #endif

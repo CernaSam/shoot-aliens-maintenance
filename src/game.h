@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <memory>
 #include "gameengine.h"
 #include "gamestate.h"
 #include "player.h"
@@ -22,8 +23,7 @@ class Game : public GameState
 {
 public:
 	void Init();
-	void Cleanup();
-
+    
 	void Pause();
 	void Resume();
 
@@ -86,7 +86,7 @@ private:
     sf::Vector2u m_playerSize;
     int m_playerMovementDirection;
 
-    Background *m_background = NULL;
+    std::unique_ptr<Background> m_background;
     sf::RectangleShape m_pauseBackground;
 
     ostringstream screenshotFilename;

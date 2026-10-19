@@ -2,21 +2,21 @@
 #define BACKGROUND_H
 #include <SFML/Graphics.hpp>
 #include "gamestate.h"
+#include <array>
 
 
 class Background
 {
     public:
         Background(sf::Vector2u dimensionsJeu);
-        virtual ~Background();
 
         void update(sf::Time elapsedTime);
         void draw(GameEngine* shootTheAliens);
     private:
         sf::Vector2u m_gameDimensions;
 
-        sf::Texture *m_backgroudTexture;
-        sf::Sprite *m_backgroundSprite;
+        std::array<sf::Texture, 3> m_backgroundTexture;
+        std::array<sf::Sprite, 3> m_backgroundSprite;
 
         sf::Time m_backgroundElapsedTime;
 };

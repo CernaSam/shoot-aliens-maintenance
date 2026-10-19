@@ -4,19 +4,13 @@
 
 void GameEngine::Init(const char* titre, int largeur, int hauteur)
 {
-    m_fenetre = new sf::RenderWindow(sf::VideoMode(largeur, hauteur), titre);
-}
-
-void GameEngine::Cleanup()
-{
-    delete m_fenetre;
+    m_fenetre = std::make_shared<sf::RenderWindow>(sf::VideoMode(largeur, hauteur), titre);
 }
 
 void GameEngine::ChangeState(GameState* state)
 {
 	if(!states.empty())
     {
-		states.back()->Cleanup();
 		states.pop_back();
 	}
 
@@ -39,7 +33,6 @@ void GameEngine::PopState()
 {
 	if (!states.empty())
     {
-		states.back()->Cleanup();
 		states.pop_back();
 	}
 

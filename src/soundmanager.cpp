@@ -18,30 +18,23 @@ SoundManager::SoundManager()
     m_volumeReacteur  = 35 * m_volumeBruitages;
     m_volumeStrafe    = 25 * m_volumeBruitages;
 
-    m_buffer_tir = new sf::SoundBuffer[m_nbrSonsTir];
     m_buffer_tir[0].loadFromFile("ressources/sons/tir1.wav");
     m_buffer_tir[1].loadFromFile("ressources/sons/tir2.wav");
     m_buffer_tir[2].loadFromFile("ressources/sons/tir3.wav");
-    m_buffer_explosion = new sf::SoundBuffer[m_nbrSonsExplosion];
     m_buffer_explosion[0].loadFromFile("ressources/sons/explosion1.wav");
     m_buffer_explosion[1].loadFromFile("ressources/sons/explosion2.wav");
     m_buffer_explosion[2].loadFromFile("ressources/sons/explosion3.wav");
     m_buffer_explosion[3].loadFromFile("ressources/sons/explosion4.wav");
-    m_buffer_reacteur = new sf::SoundBuffer[m_nbrSonsReacteur];
     m_buffer_reacteur[0].loadFromFile("ressources/sons/reacteur_principal1.wav");
     m_buffer_reacteur[1].loadFromFile("ressources/sons/reacteur_principal2.wav");
     m_buffer_reacteur[2].loadFromFile("ressources/sons/reacteur_principal3.wav");
     m_buffer_reacteur[3].loadFromFile("ressources/sons/reacteur_principal4.wav");
-    m_buffer_strafe = new sf::SoundBuffer[m_nbrSonsStrafe];
     m_buffer_strafe[0].loadFromFile("ressources/sons/reacteur_secondaire1.wav");
     m_buffer_strafe[1].loadFromFile("ressources/sons/reacteur_secondaire2.wav");
-    m_son_strafe = new sf::Sound[m_nbrSonsStrafe];
-    m_buffer_fx = new sf::SoundBuffer[m_nbrFX];
     m_buffer_fx[0].loadFromFile("ressources/sons/fx1.wav");
     m_buffer_fx[1].loadFromFile("ressources/sons/fx2.wav");
     m_buffer_fx[2].loadFromFile("ressources/sons/fx3.wav");
     m_buffer_fx[3].loadFromFile("ressources/sons/fx4.wav");
-    m_son_fx = new sf::Sound[m_nbrFX];
 
     for(int i=0 ; i<m_nbrSonsStrafe ; i++)
     {
@@ -59,16 +52,6 @@ SoundManager::SoundManager()
     m_musique.openFromFile("ressources/musiques/main_theme.wav");
     m_musique.play();
     m_musique.setVolume(m_volumeMusique);
-}
-
-SoundManager::~SoundManager()
-{
-    delete[] m_buffer_tir;
-    delete[] m_buffer_explosion;
-    delete[] m_buffer_reacteur;
-    delete[] m_buffer_strafe;
-    delete[] m_son_strafe;
-    delete[] m_buffer_fx;
 }
 
 void SoundManager::cleanupFinishedSounds()

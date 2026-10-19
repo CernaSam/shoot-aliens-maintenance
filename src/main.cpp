@@ -26,8 +26,6 @@ int main()
 		shootTheAliens.Draw();
 	}
 
-	//On nettoie l'engine
-	shootTheAliens.Cleanup();
     return 0;
 }
 

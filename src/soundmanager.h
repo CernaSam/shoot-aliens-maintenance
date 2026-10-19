@@ -2,6 +2,7 @@
 #define SOUNDMANAGER_H
 #include <iostream>
 #include <vector>
+#include <array>
 #include <deque>
 #include <map>
 #include <SFML/Audio.hpp>
@@ -13,7 +14,6 @@ class SoundManager
 {
     public:
         SoundManager();
-        virtual ~SoundManager();
         static SoundManager *getInstance()
         {
             if (SoundManager::m_singleton == NULL)
@@ -48,15 +48,15 @@ class SoundManager
         sf::Sound *m_son_fx = NULL;
 
         int const m_nbrSonsTir = 3;
-        sf::SoundBuffer *m_buffer_tir = NULL;
+        std::array<sf::SoundBuffer, 3> m_buffer_tir;
         int const m_nbrSonsExplosion = 4;
-        sf::SoundBuffer *m_buffer_explosion = NULL;
+        std::array<sf::SoundBuffer, 4> m_buffer_explosion;
         int const m_nbrSonsReacteur = 4;
-        sf::SoundBuffer *m_buffer_reacteur = NULL;
+        std::array<sf::SoundBuffer, 4> m_buffer_reacteur;
         int const m_nbrSonsStrafe = 2;
-        sf::SoundBuffer *m_buffer_strafe = NULL;
+        std::array<sf::SoundBuffer, 2> m_buffer_strafe;
         int const m_nbrFX = 4;
-        sf::SoundBuffer *m_buffer_fx = NULL;
+        std::array<sf::SoundBuffer, 4> m_buffer_fx;
 
         unsigned int m_volumeMusique, m_volumeFX, m_volumeTir, m_volumeExplosion, m_volumeReacteur, m_volumeStrafe;
         float m_volume, m_volumeBruitages;
